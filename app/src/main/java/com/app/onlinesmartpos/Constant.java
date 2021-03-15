@@ -8,7 +8,7 @@ public class Constant {
     }
 
     //For retrofit base url must end with /
-    public static final String BASE_URL = "http://37e8fd99fa3c.ngrok.io/api/";
+    public static final String BASE_URL = "http://1441a5880a5e.ngrok.io/api/";
 
     //For retrofit base url must end with /
     public static final String PRODUCT_IMAGE_URL = "http://localhost/product_images/";
@@ -73,12 +73,12 @@ public class Constant {
     public static final String USER_PASSWORD="user_password";
 
 
-    public static final String SUPPLIERS_ID="suppliers_id";
-    public static final String SUPPLIERS_NAME="suppliers_name";
-    public static final String SUPPLIERS_CONTACT_PERSON="suppliers_contact_person";
-    public static final String SUPPLIERS_CELL="suppliers_cell";
-    public static final String SUPPLIERS_EMAIL="suppliers_email";
-    public static final String SUPPLIERS_ADDRESS="suppliers_address";
+    public static final String SUPPLIERS_ID="supplier_id";
+    public static final String SUPPLIERS_NAME="supplier_name";
+    public static final String SUPPLIERS_CONTACT_PERSON="supplier_contact_person";
+    public static final String SUPPLIERS_CELL="supplier_cell";
+    public static final String SUPPLIERS_EMAIL="supplier_email";
+    public static final String SUPPLIERS_ADDRESS="supplier_address";
 
     public static final String KEY_FILE="file";
     public static final String PRODUCT_ID="product_id";

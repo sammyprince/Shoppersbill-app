@@ -658,7 +658,8 @@ public class EditProductActivity extends BaseActivity {
         Call<List<Suppliers>> call;
 
 
-        call = apiInterface.getSuppliers("");
+        String staffId = sp.getString(Constant.SP_STAFF_ID, "");
+        call = apiInterface.getSuppliers(staffId, "");
 
         call.enqueue(new Callback<List<Suppliers>>() {
             @Override

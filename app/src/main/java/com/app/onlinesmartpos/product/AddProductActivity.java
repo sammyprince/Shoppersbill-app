@@ -2,7 +2,9 @@ package com.app.onlinesmartpos.product;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -49,6 +51,7 @@ public class AddProductActivity extends BaseActivity {
 
 
     ProgressDialog loading;
+    SharedPreferences sp;
 
     public static EditText etxtProductCode;
     EditText etxtProductName,etxtProductStock, etxtProductCategory, etxtProductDescription, etxtProductSellPrice, etxtProductSupplier, etxtProdcutWeightUnit, etxtProductWeight;
@@ -73,6 +76,7 @@ public class AddProductActivity extends BaseActivity {
         getSupportActionBar().setHomeButtonEnabled(true); //for back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);//for back button
         getSupportActionBar().setTitle(R.string.add_product);
+        sp = getSharedPreferences(Constant.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
         etxtProductName = findViewById(R.id.etxt_product_name);
         etxtProductCode = findViewById(R.id.etxt_product_code);
@@ -578,8 +582,8 @@ public class AddProductActivity extends BaseActivity {
 
         Call<List<Suppliers>> call;
 
-
-        call = apiInterface.getSuppliers("");
+        String staffId = sp.getString(Constant.SP_STAFF_ID, "");
+        call = apiInterface.getSuppliers(staffId, "");
 
         call.enqueue(new Callback<List<Suppliers>>() {
             @Override
@@ -618,7 +622,6 @@ public class AddProductActivity extends BaseActivity {
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
 
         Call<List<WeightUnit>> call;
-
 
         call = apiInterface.getWeightUnits("");
 

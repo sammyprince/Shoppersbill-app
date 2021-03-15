@@ -878,8 +878,8 @@ public class DatabaseAccess {
                 HashMap<String, String> map = new HashMap<>();
 
 
-                map.put("suppliers_id", cursor.getString(0));
-                map.put("suppliers_name", cursor.getString(1));
+                map.put("supplier_id", cursor.getString(0));
+                map.put("supplier_name", cursor.getString(1));
 
                 productSuppliers.add(map);
             } while (cursor.moveToNext());
@@ -972,7 +972,7 @@ public class DatabaseAccess {
     //get suppliers data
     public ArrayList<HashMap<String, String>> getSuppliers() {
         ArrayList<HashMap<String, String>> supplier = new ArrayList<>();
-        Cursor cursor = database.rawQuery("SELECT * FROM suppliers ORDER BY suppliers_id DESC", null);
+        Cursor cursor = database.rawQuery("SELECT * FROM suppliers ORDER BY supplier_id DESC", null);
         if (cursor.moveToFirst()) {
             do {
                 HashMap<String, String> map = new HashMap<>();
@@ -1121,7 +1121,7 @@ public class DatabaseAccess {
     public boolean deleteSupplier(String customerId) {
 
 
-        long check = database.delete(Constant.suppliers, "suppliers_id=?", new String[]{customerId});
+        long check = database.delete(Constant.suppliers, "supplier_id=?", new String[]{customerId});
 
         database.close();
 

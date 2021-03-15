@@ -1,7 +1,9 @@
 package com.app.onlinesmartpos.suppliers;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -30,6 +32,7 @@ public class AddSuppliersActivity extends BaseActivity {
     ProgressDialog loading;
     EditText etxtSuppliersName, etxtSuppliersContactPerson, etxtSuppliersAddress, etxtSuppliersCell, etxtSuppliersEmail;
     TextView txtAddSuppliers;
+    SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,7 @@ public class AddSuppliersActivity extends BaseActivity {
         getSupportActionBar().setHomeButtonEnabled(true); //for back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);//for back button
         getSupportActionBar().setTitle(R.string.add_suppliers);
+        sp = getSharedPreferences(Constant.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
         etxtSuppliersName = findViewById(R.id.etxt_supplier_name);
         etxtSuppliersContactPerson = findViewById(R.id.etxt_supplier_contact_name);
@@ -113,7 +117,8 @@ public class AddSuppliersActivity extends BaseActivity {
         loading.show();
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
 
-        Call<Suppliers> call = apiInterface.addSupplier(name,contactPerson,cell,email,address);
+        String staffId = sp.getString(Constant.SP_STAFF_ID, "");
+        Call<Suppliers> call = apiInterface.addSupplier(staffId, name,contactPerson,cell,email,address);
         call.enqueue(new Callback<Suppliers>() {
             @Override
             public void onResponse(@NonNull Call<Suppliers> call, @NonNull Response<Suppliers> response) {
@@ -145,6 +150,12 @@ public class AddSuppliersActivity extends BaseActivity {
                         loading.dismiss();
                         Toasty.error(AddSuppliersActivity.this, R.string.failed, Toast.LENGTH_SHORT).show();
                     }
+                }
+
+                else
+                {
+                    loading.dismiss();
+                    Log.d("Error","Error");
                 }
             }
 

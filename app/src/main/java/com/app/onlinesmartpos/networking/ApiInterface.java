@@ -143,8 +143,9 @@ public interface ApiInterface {
 
 
     //for product data
-    @GET("search_product")
+    @GET("products/list_category")
     Call<List<Product>> searchProductByCategory(
+            @Query(Constant.SP_STAFF_ID) String staffId,
             @Query(Constant.KEY_CATEGORY_ID) String categoryId
     );
 
@@ -187,8 +188,9 @@ public interface ApiInterface {
 
     //add suppliers data to server
     @FormUrlEncoded
-    @POST("add_supplier")
+    @POST("suppliers/add_item")
     Call<Suppliers> addSupplier(
+            @Field(Constant.SP_STAFF_ID) String staffId,
             @Field(Constant.SUPPLIERS_NAME) String name,
             @Field(Constant.SUPPLIERS_CONTACT_PERSON) String contactPerson,
             @Field(Constant.SUPPLIERS_CELL) String cell,
@@ -198,7 +200,7 @@ public interface ApiInterface {
 
     //add suppliers data to server
     @FormUrlEncoded
-    @POST("update_supplier")
+    @POST("suppliers/update_item")
     Call<Suppliers> updateSupplier(
             @Field(Constant.SUPPLIERS_ID) String suppliersId,
             @Field(Constant.SUPPLIERS_NAME) String name,
@@ -253,17 +255,17 @@ public interface ApiInterface {
 
     //delete supplier
     @FormUrlEncoded
-    @POST("delete_supplier")
+    @POST("suppliers/delete_item")
     Call<Suppliers> deleteSupplier(
             @Field(Constant.SUPPLIERS_ID) String suppliersId
     );
 
 
     //get suppliers data
-    @GET("suppliers")
+    @GET("suppliers/list")
     Call<List<Suppliers>> getSuppliers(
+            @Query(Constant.SP_STAFF_ID) String staffId,
             @Query(Constant.SEARCH_TEXT) String searchText
-
     );
 
 

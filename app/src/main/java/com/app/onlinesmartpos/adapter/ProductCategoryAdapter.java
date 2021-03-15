@@ -1,6 +1,7 @@
 package com.app.onlinesmartpos.adapter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.app.onlinesmartpos.Constant;
 import com.app.onlinesmartpos.R;
 import com.app.onlinesmartpos.model.Category;
 import com.app.onlinesmartpos.model.Product;
@@ -37,6 +39,7 @@ public class ProductCategoryAdapter extends RecyclerView.Adapter<ProductCategory
     ImageView imgNoProduct;
     TextView txtNoProducts;
     private ShimmerFrameLayout mShimmerViewContainer;
+    SharedPreferences sp;
 
 
     public ProductCategoryAdapter(Context context, List<Category> categoryData, RecyclerView recyclerView, ImageView imgNoProduct, TextView txtNoProducts,  ShimmerFrameLayout mShimmerViewContainer) {
@@ -44,6 +47,7 @@ public class ProductCategoryAdapter extends RecyclerView.Adapter<ProductCategory
         this.categoryData = categoryData;
         this.recyclerView=recyclerView;
         player = MediaPlayer.create(context, R.raw.delete_sound);
+        sp = context.getSharedPreferences(Constant.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
         this.imgNoProduct=imgNoProduct;
         this.txtNoProducts=txtNoProducts;
@@ -62,7 +66,6 @@ public class ProductCategoryAdapter extends RecyclerView.Adapter<ProductCategory
 
     @Override
     public void onBindViewHolder(@NonNull final ProductCategoryAdapter.MyViewHolder holder, int position) {
-
         final String categoryId = categoryData.get(position).getProductCategoryId();
         String categoryName = categoryData.get(position).getProductCategoryName();
 
@@ -117,7 +120,8 @@ public class ProductCategoryAdapter extends RecyclerView.Adapter<ProductCategory
 
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         Call<List<Product>> call;
-        call = apiInterface.searchProductByCategory(categoryId);
+        String staffId = sp.getString(Constant.SP_STAFF_ID, "");
+        call = apiInterface.searchProductByCategory(staffId, categoryId);
 
         call.enqueue(new Callback<List<Product>>() {
             @Override

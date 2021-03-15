@@ -1,6 +1,8 @@
 package com.app.onlinesmartpos.suppliers;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.app.onlinesmartpos.Constant;
 import com.app.onlinesmartpos.R;
 import com.app.onlinesmartpos.adapter.SupplierAdapter;
 import com.app.onlinesmartpos.model.Suppliers;
@@ -45,6 +48,7 @@ public class SuppliersActivity extends BaseActivity {
     FloatingActionButton fabAdd;
     private ShimmerFrameLayout mShimmerViewContainer;
     SwipeRefreshLayout mSwipeRefreshLayout;
+    SharedPreferences sp;
 
 
     @Override
@@ -55,6 +59,7 @@ public class SuppliersActivity extends BaseActivity {
         getSupportActionBar().setHomeButtonEnabled(true); //for back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);//for back button
         getSupportActionBar().setTitle(R.string.all_suppliers);
+        sp = getSharedPreferences(Constant.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
         recyclerView = findViewById(R.id.cart_recyclerview);
         imgNoProduct = findViewById(R.id.image_no_product);
@@ -175,7 +180,8 @@ public class SuppliersActivity extends BaseActivity {
 
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         Call<List<Suppliers>> call;
-        call = apiInterface.getSuppliers(searchText);
+        String staffId = sp.getString(Constant.SP_STAFF_ID, "");
+        call = apiInterface.getSuppliers(staffId, searchText);
 
         call.enqueue(new Callback<List<Suppliers>>() {
             @Override

@@ -50,12 +50,12 @@ public class EditSuppliersActivity extends BaseActivity {
         txtUpdateSuppliers = findViewById(R.id.txt_update_suppliers);
         txtEditSuppliers = findViewById(R.id.txt_edit_suppliers);
 
-        String getSuppliersId = getIntent().getExtras().getString("suppliers_id");
-        String getSuppliersName = getIntent().getExtras().getString("suppliers_name");
-        String getSuppliersContactPerson = getIntent().getExtras().getString("suppliers_contact_person");
-        String getSuppliersCell = getIntent().getExtras().getString("suppliers_cell");
-        String getSuppliersEmail = getIntent().getExtras().getString("suppliers_email");
-        String getSuppliersAddress = getIntent().getExtras().getString("suppliers_address");
+        String getSuppliersId = getIntent().getExtras().getString("supplier_id");
+        String getSuppliersName = getIntent().getExtras().getString("supplier_name");
+        String getSuppliersContactPerson = getIntent().getExtras().getString("supplier_contact_person");
+        String getSuppliersCell = getIntent().getExtras().getString("supplier_cell");
+        String getSuppliersEmail = getIntent().getExtras().getString("supplier_email");
+        String getSuppliersAddress = getIntent().getExtras().getString("supplier_address");
 
 
         etxtSuppliersName.setText(getSuppliersName);

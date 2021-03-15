@@ -5,21 +5,21 @@ import com.google.gson.annotations.SerializedName;
 public class Suppliers {
 
 
-    @SerializedName("suppliers_id")
+    @SerializedName("supplier_id")
     private String suppliersId;
 
-    @SerializedName("suppliers_name")
+    @SerializedName("supplier_name")
     private String suppliersName;
-    @SerializedName("suppliers_email")
+    @SerializedName("supplier_email")
     private String suppliersEmail;
 
-    @SerializedName("suppliers_cell")
+    @SerializedName("supplier_cell")
     private String suppliersCell;
 
-    @SerializedName("suppliers_address")
+    @SerializedName("supplier_address")
     private String suppliersAddress;
 
-    @SerializedName("suppliers_contact_person")
+    @SerializedName("supplier_contact_person")
     private String suppliersContactPerson;
 
     @SerializedName("value")

@@ -37,6 +37,7 @@ public class PosProductAdapter extends RecyclerView.Adapter<PosProductAdapter.My
     DatabaseAccess databaseAccess;
     SharedPreferences sp;
     String currency;
+    int getStock = 0;
 
 
     public PosProductAdapter(Context context, List<Product> productData) {
@@ -83,7 +84,9 @@ public class PosProductAdapter extends RecyclerView.Adapter<PosProductAdapter.My
 
 
         //Low stock marked as RED color
-        int getStock=Integer.parseInt(productStock);
+        if(productStock != null) {
+            getStock = Integer.parseInt(productStock);
+        }
         if (getStock>5) {
             holder.txtStock.setText(context.getString(R.string.stock) + " : " + productStock);
             holder.txtStockStatus.setVisibility(View.VISIBLE);
