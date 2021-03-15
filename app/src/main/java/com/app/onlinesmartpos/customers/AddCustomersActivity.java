@@ -1,7 +1,9 @@
 package com.app.onlinesmartpos.customers;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -30,6 +32,7 @@ public class AddCustomersActivity extends BaseActivity {
     ProgressDialog loading;
     EditText etxtCustomerName, etxtAddress, etxtCustomerCell, etxtCustomerEmail;
     TextView txtAddCustomer;
+    SharedPreferences sp;
 
 
     @Override
@@ -40,6 +43,7 @@ public class AddCustomersActivity extends BaseActivity {
         getSupportActionBar().setHomeButtonEnabled(true); //for back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);//for back button
         getSupportActionBar().setTitle(R.string.add_customer);
+        sp = getSharedPreferences(Constant.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
 
         etxtCustomerName = findViewById(R.id.etxt_customer_name);
@@ -73,15 +77,8 @@ public class AddCustomersActivity extends BaseActivity {
                     etxtAddress.setError(getString(R.string.enter_customer_address));
                     etxtAddress.requestFocus();
                 } else {
-
-
-
                      addCustomer(customerName, customerCell, customerEmail, customerAddress);
-
-
                 }
-
-
             }
         });
 
@@ -113,7 +110,8 @@ public class AddCustomersActivity extends BaseActivity {
         loading.show();
        ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
 
-        Call<Customer> call = apiInterface.addCustomer(name,cell,email,address);
+        String staffId = sp.getString(Constant.SP_STAFF_ID, "");
+        Call<Customer> call = apiInterface.addCustomer(staffId, name, cell, email, address);
         call.enqueue(new Callback<Customer>() {
             @Override
             public void onResponse(@NonNull Call<Customer> call, @NonNull Response<Customer> response) {

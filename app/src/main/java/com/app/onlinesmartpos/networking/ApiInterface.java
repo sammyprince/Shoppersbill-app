@@ -153,8 +153,9 @@ public interface ApiInterface {
 
     //add customer data to server
     @FormUrlEncoded
-    @POST("add_customer")
+    @POST("customers/add_item")
     Call<Customer> addCustomer(
+            @Field(Constant.SP_STAFF_ID) String staffId,
             @Field(Constant.CUSTOMER_NAME) String name,
             @Field(Constant.CUSTOMER_CELL) String cell,
             @Field(Constant.CUSTOMER_EMAIL) String email,
@@ -209,7 +210,7 @@ public interface ApiInterface {
 
     //update customer data to server
     @FormUrlEncoded
-    @POST("update_customer")
+    @POST("customers/update_item")
     Call<Customer> updateCustomer(
             @Field(Constant.CUSTOMER_ID) String id,
             @Field(Constant.CUSTOMER_NAME) String name,
@@ -220,7 +221,7 @@ public interface ApiInterface {
 
     //delete customer
     @FormUrlEncoded
-    @POST("delete_customer")
+    @POST("customers/delete_item")
     Call<Customer> deleteCustomer(
             @Field(Constant.CUSTOMER_ID) String customerId
     );
@@ -291,7 +292,7 @@ public interface ApiInterface {
 
     //for upload image and info
     @Multipart
-    @POST("update_product")
+    @POST("products/update_product")
     Call<Product> updateProduct(@Part MultipartBody.Part file,
                                 @Part(Constant.KEY_FILE) RequestBody name,
                                 @Part(Constant.PRODUCT_NAME) RequestBody productName,
@@ -308,7 +309,7 @@ public interface ApiInterface {
 
     //for upload image and info
     @Multipart
-    @POST("update_product_without_image")
+    @POST("products/update_product_without_image")
     Call<Product> updateProductWithoutImage(
 
             @Part(Constant.PRODUCT_NAME) RequestBody productName,
