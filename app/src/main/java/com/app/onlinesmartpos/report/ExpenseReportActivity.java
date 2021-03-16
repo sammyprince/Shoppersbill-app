@@ -103,33 +103,28 @@ public class ExpenseReportActivity extends BaseActivity {
                 return true;
             case R.id.menu_all_sales:
                 getReport("all");
-                getExpenseData("all");
 
                 return true;
 
             case R.id.menu_daily:
                 getReport("daily");
-                getExpenseData("daily");
 
                 return true;
 
             case R.id.menu_weekly:
                 getReport("weekly");
-                getExpenseData("weekly");
 
                 return true;
 
 
             case R.id.menu_monthly:
                 getReport("monthly");
-                getExpenseData("monthly");
 
 
                 return true;
 
             case R.id.menu_yearly:
                 getReport("yearly");
-                getExpenseData("yearly");
 
 
                 return true;
@@ -157,13 +152,12 @@ public class ExpenseReportActivity extends BaseActivity {
 
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         Call<List<Expense>> call;
-        call = apiInterface.getAllExpense(type);
+        String staffId = sp.getString(Constant.SP_STAFF_ID, "");
+        call = apiInterface.getAllExpense(staffId, type);
 
         call.enqueue(new Callback<List<Expense>>() {
             @Override
             public void onResponse(@NonNull Call<List<Expense>> call, @NonNull Response<List<Expense>> response) {
-
-
                 if (response.isSuccessful() && response.body() != null) {
                     List<Expense> expenseList;
                     expenseList = response.body();
@@ -212,20 +206,21 @@ public class ExpenseReportActivity extends BaseActivity {
     public void getExpenseReport(String type) {
 
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-        Call<List<ExpenseReport>> call;
-        call = apiInterface.getExpenseReport(type);
+        Call<ExpenseReport> call;
+        String staffId = sp.getString(Constant.SP_STAFF_ID, "");
+        call = apiInterface.getExpenseReport(staffId, type);
 
-        call.enqueue(new Callback<List<ExpenseReport>>() {
+        call.enqueue(new Callback<ExpenseReport>() {
             @Override
-            public void onResponse(@NonNull Call<List<ExpenseReport>> call, @NonNull Response<List<ExpenseReport>> response) {
+            public void onResponse(@NonNull Call<ExpenseReport> call, @NonNull Response<ExpenseReport> response) {
 
 
                 if (response.isSuccessful() && response.body() != null) {
-                    List<ExpenseReport> expenseReports;
+                    ExpenseReport expenseReports;
                     expenseReports = response.body();
 
 
-                    if (expenseReports.isEmpty()) {
+                    if (expenseReports == null) {
 
 
                         Log.d("Data", "Empty");
@@ -235,7 +230,7 @@ public class ExpenseReportActivity extends BaseActivity {
                     } else {
 
 
-                        String totalExpense = expenseReports.get(0).getTotalExpensePrice();
+                        String totalExpense = expenseReports.getTotalExpensePrice();
 
                         if (totalExpense!=null) {
 
@@ -253,7 +248,7 @@ public class ExpenseReportActivity extends BaseActivity {
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<ExpenseReport>> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<ExpenseReport> call, @NonNull Throwable t) {
 
                 Toast.makeText(ExpenseReportActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
                 Log.d("Error : ", t.toString());

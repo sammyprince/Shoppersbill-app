@@ -44,7 +44,7 @@ public interface ApiInterface {
 
 
     //calling json array , need list
-    @POST("order")
+    @POST("orders/update_item")
     Call<String> submitOrders(
             @Body RequestBody ordersData
     );
@@ -61,10 +61,9 @@ public interface ApiInterface {
 
 
     //get customers data
-    @GET("orders")
+    @GET("orders/list")
     Call<List<OrderList>> getOrders(
             @Query(Constant.SEARCH_TEXT) String searchText
-
     );
 
 
@@ -84,55 +83,53 @@ public interface ApiInterface {
 
 
 
-    //get order data
-    @GET("order_details_by_invoice")
+    @GET("orders/list_invoice")
     Call<List<OrderDetails>> OrderDetailsByInvoice(
             @Query(Constant.INVOICE_ID) String invoiceId
-
     );
 
-    //get order data
-    @GET("sales_report_list")
+    @GET("reports/sales_list")
     Call<List<OrderDetails>> getReportList(
+            @Query(Constant.SP_STAFF_ID) String staffId,
             @Query(Constant.KEY_TYPE) String type
-
     );
 
 
-    //get order data
-    @GET("shop_information")
-    Call<List<ShopInformation>> shopInformation(
-            @Query(Constant.SHOP_ID) String shopId
-
+    @GET("shop_info")
+    Call<ShopInformation> shopInformation(
+            @Query(Constant.SP_STAFF_ID) String staffId
     );
 
 
 
-    //get order data
-    @GET("sales_report")
-    Call<List<SalesReport>> getSalesReport(
-
+    @GET("reports/sales_total")
+    Call<SalesReport> getSalesReport(
+            @Query(Constant.SP_STAFF_ID) String staffId,
             @Query(Constant.KEY_TYPE) String type
     );
 
 
 
     //get expense data
-    @GET("expense_report")
-    Call<List<ExpenseReport>> getExpenseReport(
-
+    @GET("reports/expense_total")
+    Call<ExpenseReport> getExpenseReport(
+            @Query(Constant.SP_STAFF_ID) String staffId,
             @Query(Constant.KEY_TYPE) String type
     );
 
 
     //for monthly expense data
-    @GET("monthly_expenses")
-    Call<List<MonthData>> getMonthlyExpense();
+    @GET("reports/monthly_expenses")
+    Call<MonthData> getMonthlyExpense(
+            @Query(Constant.SP_STAFF_ID) String staffId
+    );
 
 
     //for monthly sales data
-    @GET("monthly_sales")
-    Call<List<MonthData>> getMonthlySales();
+    @GET("reports/monthly_sales")
+    Call<MonthData> getMonthlySales(
+            @Query(Constant.SP_STAFF_ID) String staffId
+    );
 
 
 
@@ -165,8 +162,9 @@ public interface ApiInterface {
 
     //add expense data to server
     @FormUrlEncoded
-    @POST("add_expense")
+    @POST("expenses/add_item")
     Call<Expense> addExpense(
+            @Field(Constant.SP_STAFF_ID) String staffId,
             @Field(Constant.EXPENSE_NAME) String name,
             @Field(Constant.EXPENSE_AMOUNT) String amount,
             @Field(Constant.EXPENSE_NOTE) String note,
@@ -176,7 +174,7 @@ public interface ApiInterface {
 
     //update expense data to server
     @FormUrlEncoded
-    @POST("update_expense")
+    @POST("expenses/update_item")
     Call<Expense> updateExpense(
             @Field(Constant.EXPENSE_ID) String id,
             @Field(Constant.EXPENSE_NAME) String name,
@@ -231,7 +229,7 @@ public interface ApiInterface {
 
     //delete customer
     @FormUrlEncoded
-    @POST("delete_order")
+    @POST("orders/delete_item")
     Call<OrderList> deleteOrder(
             @Field(Constant.INVOICE_ID) String invoiceId
     );
@@ -247,7 +245,7 @@ public interface ApiInterface {
 
     //delete customer
     @FormUrlEncoded
-    @POST("delete_expense")
+    @POST("expenses/delete_item")
     Call<Expense> deleteExpense(
             @Field(Constant.EXPENSE_ID) String expenseId
     );
@@ -327,8 +325,9 @@ public interface ApiInterface {
 
 
     //get expense data
-    @GET("expenses")
+    @GET("expenses/list")
     Call<List<Expense>> getExpense(
+            @Query(Constant.SP_STAFF_ID) String staffId,
             @Query(Constant.SEARCH_TEXT) String searchText
 
     );
@@ -336,11 +335,9 @@ public interface ApiInterface {
 
 
     //get expense data
-    @GET("all_expense")
+    @GET("reports/expense_list")
     Call<List<Expense>> getAllExpense(
+            @Query(Constant.SP_STAFF_ID) String staffId,
             @Query(Constant.KEY_TYPE) String type
-
     );
-
-
 }

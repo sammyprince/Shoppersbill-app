@@ -117,20 +117,21 @@ public class ExpenseGraphActivity extends BaseActivity {
     public void getMonthlyExpense() {
 
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-        Call<List<MonthData>> call;
-        call = apiInterface.getMonthlyExpense();
+        Call<MonthData> call;
+        String staffId = sp.getString(Constant.SP_STAFF_ID, "");
+        call = apiInterface.getMonthlyExpense(staffId);
 
-        call.enqueue(new Callback<List<MonthData>>() {
+        call.enqueue(new Callback<MonthData>() {
             @Override
-            public void onResponse(@NonNull Call<List<MonthData>> call, @NonNull Response<List<MonthData>> response) {
+            public void onResponse(@NonNull Call<MonthData> call, @NonNull Response<MonthData> response) {
 
 
                 if (response.isSuccessful() && response.body() != null) {
-                    List<MonthData> monthDataList;
+                    MonthData monthDataList;
                     monthDataList = response.body();
 
 
-                    if (monthDataList.isEmpty()) {
+                    if (monthDataList == null) {
 
 
                         Log.d("Data", "Empty");
@@ -143,18 +144,18 @@ public class ExpenseGraphActivity extends BaseActivity {
                         mShimmerViewContainer.setVisibility(View.GONE);
 
                         barEntries = new ArrayList<>();
-                        float jan=Float.parseFloat(monthDataList.get(0).getJan());
-                        float feb=Float.parseFloat(monthDataList.get(0).getFeb());
-                        float mar=Float.parseFloat(monthDataList.get(0).getMar());
-                        float apr=Float.parseFloat(monthDataList.get(0).getApr());
-                        float may=Float.parseFloat(monthDataList.get(0).getMay());
-                        float jun=Float.parseFloat(monthDataList.get(0).getJun());
-                        float jul=Float.parseFloat(monthDataList.get(0).getJul());
-                        float aug=Float.parseFloat(monthDataList.get(0).getAug());
-                        float sep=Float.parseFloat(monthDataList.get(0).getSep());
-                        float oct=Float.parseFloat(monthDataList.get(0).getOct());
-                        float nov=Float.parseFloat(monthDataList.get(0).getNov());
-                        float dec=Float.parseFloat(monthDataList.get(0).getDec());
+                        float jan=Float.parseFloat(monthDataList.getJan());
+                        float feb=Float.parseFloat(monthDataList.getFeb());
+                        float mar=Float.parseFloat(monthDataList.getMar());
+                        float apr=Float.parseFloat(monthDataList.getApr());
+                        float may=Float.parseFloat(monthDataList.getMay());
+                        float jun=Float.parseFloat(monthDataList.getJun());
+                        float jul=Float.parseFloat(monthDataList.getJul());
+                        float aug=Float.parseFloat(monthDataList.getAug());
+                        float sep=Float.parseFloat(monthDataList.getSep());
+                        float oct=Float.parseFloat(monthDataList.getOct());
+                        float nov=Float.parseFloat(monthDataList.getNov());
+                        float dec=Float.parseFloat(monthDataList.getDec());
 
 
 
@@ -185,7 +186,7 @@ public class ExpenseGraphActivity extends BaseActivity {
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<MonthData>> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<MonthData> call, @NonNull Throwable t) {
 
                 Toast.makeText(ExpenseGraphActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
                 Log.d("Error : ", t.toString());

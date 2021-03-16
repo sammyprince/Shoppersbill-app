@@ -79,13 +79,10 @@ public class SalesReportActivity extends BaseActivity {
         recyclerView.setHasFixedSize(true);
 
 
-        //sum of all transaction
-        getSalesReport("all");
+//        //sum of all transaction
+//        getSalesReport("all");
         //to view all sales data
         getReport("all");
-
-
-
 
     }
 
@@ -166,21 +163,22 @@ public class SalesReportActivity extends BaseActivity {
     public void getSalesReport(String type) {
 
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-        Call<List<SalesReport>> call;
-        call = apiInterface.getSalesReport(type);
+        Call<SalesReport> call;
+        String staffId = sp.getString(Constant.SP_STAFF_ID, "");
+        call = apiInterface.getSalesReport(staffId, type);
 
-        call.enqueue(new Callback<List<SalesReport>>() {
+        call.enqueue(new Callback<SalesReport>() {
             @Override
-            public void onResponse(@NonNull Call<List<SalesReport>> call, @NonNull Response<List<SalesReport>> response) {
+            public void onResponse(@NonNull Call<SalesReport> call, @NonNull Response<SalesReport> response) {
 
 
                 if (response.isSuccessful() && response.body() != null) {
-                    List<SalesReport> salesReport;
+                    SalesReport salesReport;
                     salesReport = response.body();
 
 
 
-                    if (salesReport.isEmpty()) {
+                    if (salesReport == null) {
 
 
                         Log.d("Data", "Empty");
@@ -189,9 +187,9 @@ public class SalesReportActivity extends BaseActivity {
                     } else {
 
 
-                        String totalOrderPrice=salesReport.get(0).getTotalOrderPrice();
-                        String totalTax=salesReport.get(0).getTotalTax();
-                        String totalDiscount=salesReport.get(0).getTotalDiscount();
+                        String totalOrderPrice=salesReport.getTotalOrderPrice();
+                        String totalTax=salesReport.getTotalTax();
+                        String totalDiscount=salesReport.getTotalDiscount();
 
                         if (totalOrderPrice!=null) {
 
@@ -221,7 +219,7 @@ public class SalesReportActivity extends BaseActivity {
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<SalesReport>> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<SalesReport> call, @NonNull Throwable t) {
 
                 Toast.makeText(SalesReportActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
                 Log.d("Error : ", t.toString());
@@ -241,7 +239,8 @@ public class SalesReportActivity extends BaseActivity {
 
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         Call<List<OrderDetails>> call;
-        call = apiInterface.getReportList(type);
+        String staffId = sp.getString(Constant.SP_STAFF_ID, "");
+        call = apiInterface.getReportList(staffId, type);
 
         call.enqueue(new Callback<List<OrderDetails>>() {
             @Override
@@ -284,9 +283,6 @@ public class SalesReportActivity extends BaseActivity {
                         imgNoProduct.setVisibility(View.GONE);
                         txtNoProducts.setVisibility(View.GONE);
                         txtTotalPrice.setVisibility(View.VISIBLE);
-
-
-
                     }
 
                 }

@@ -8,7 +8,7 @@ public class Constant {
     }
 
     //For retrofit base url must end with /
-    public static final String BASE_URL = "http://1441a5880a5e.ngrok.io/api/";
+    public static final String BASE_URL = "http://283ddc95d51f.ngrok.io/api/";
 
     //For retrofit base url must end with /
     public static final String PRODUCT_IMAGE_URL = "http://localhost/product_images/";

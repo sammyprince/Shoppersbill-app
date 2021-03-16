@@ -55,7 +55,7 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
 
         holder.txtProductQty.setText(context.getString(R.string.quantity) + orderData.get(position).getProductQuantity());
 
-        String productWeight = orderData.get(position).getProductWeight();
+        String productWeight = orderData.get(position).getProductWeight() != null ? orderData.get(position).getProductWeight() : "";
         holder.txtProductWeight.setText(productWeight);
 
         String productImage = orderData.get(position).getProductImage();
@@ -66,7 +66,7 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
         String unitPrice = orderData.get(position).getProductPrice();
         String qty = orderData.get(position).getProductQuantity();
         double price = Double.parseDouble(unitPrice);
-        int quantity = Integer.parseInt(qty);
+        double quantity = Double.parseDouble(qty);
         double cost = quantity * price;
 
         subTotalPrice=subTotalPrice+cost;

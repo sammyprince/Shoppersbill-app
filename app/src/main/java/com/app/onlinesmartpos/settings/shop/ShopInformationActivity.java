@@ -1,12 +1,13 @@
 package com.app.onlinesmartpos.settings.shop;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
-
+import android.content.SharedPreferences;
 import androidx.annotation.NonNull;
 
 import com.app.onlinesmartpos.Constant;
@@ -28,6 +29,7 @@ public class ShopInformationActivity extends BaseActivity {
 
     EditText etxtShopName, etxtTax, etxtShopContact, etxtShopEmail, etxtShopAddress;
     ProgressDialog loading;
+    SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,7 @@ public class ShopInformationActivity extends BaseActivity {
         getSupportActionBar().setHomeButtonEnabled(true); //for back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);//for back button
         getSupportActionBar().setTitle(R.string.shop_information);
+        sp = getSharedPreferences(Constant.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
 
         etxtShopName = findViewById(R.id.etxt_shop_name);
@@ -45,45 +48,42 @@ public class ShopInformationActivity extends BaseActivity {
         etxtShopAddress = findViewById(R.id.etxt_shop_address);
         etxtTax = findViewById(R.id.etxt_tax);
 
-
-        getShopInfo(Constant.SHOP_NUMBER);
+        getShopInfo();
 
         etxtShopName.setEnabled(false);
         etxtShopContact.setEnabled(false);
         etxtShopEmail.setEnabled(false);
         etxtShopAddress.setEnabled(false);
         etxtTax.setEnabled(false);
-
-
-
     }
 
 
 
-    public void getShopInfo(String shopId) {
+    public void getShopInfo() {
 
         loading=new ProgressDialog(this);
         loading.setMessage(getString(R.string.please_wait));
         loading.setCancelable(false);
         loading.show();
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-        Call<List<ShopInformation>> call;
-        call = apiInterface.shopInformation(shopId);
+        Call<ShopInformation> call;
+        String staffId = sp.getString(Constant.SP_STAFF_ID, "");
+        call = apiInterface.shopInformation(staffId);
 
-        call.enqueue(new Callback<List<ShopInformation>>() {
+        call.enqueue(new Callback<ShopInformation>() {
             @Override
-            public void onResponse(@NonNull Call<List<ShopInformation>> call, @NonNull Response<List<ShopInformation>> response) {
+            public void onResponse(@NonNull Call<ShopInformation> call, @NonNull Response<ShopInformation> response) {
 
 
                 if (response.isSuccessful() && response.body() != null) {
 
                     loading.dismiss();
-                    List<ShopInformation> shopInformation;
+                    ShopInformation shopInformation;
                     shopInformation = response.body();
 
 
 
-                    if (shopInformation.isEmpty()) {
+                    if (shopInformation == null) {
 
 
                         Toasty.warning(ShopInformationActivity.this, R.string.no_product_found, Toast.LENGTH_SHORT).show();
@@ -92,11 +92,11 @@ public class ShopInformationActivity extends BaseActivity {
                     } else {
 
 
-                        String shopName=shopInformation.get(0).getShopName();
-                        String shopContact=shopInformation.get(0).getShopContact();
-                        String shopEmail=shopInformation.get(0).getShopEmail();
-                        String shopAddress=shopInformation.get(0).getShopAddress();
-                        String tax=shopInformation.get(0).getTax();
+                        String shopName=shopInformation.getShopName();
+                        String shopContact=shopInformation.getShopContact();
+                        String shopEmail=shopInformation.getShopEmail();
+                        String shopAddress=shopInformation.getShopAddress();
+                        String tax=shopInformation.getTax();
 
 
                         etxtShopName.setText(shopName);
@@ -105,8 +105,18 @@ public class ShopInformationActivity extends BaseActivity {
                         etxtShopAddress.setText(shopAddress);
                         etxtTax.setText(tax);
 
+                        SharedPreferences.Editor editor = sp.edit();
+                        //Adding values to editor
+
+                        editor.putString(Constant.SP_SHOP_NAME, shopName);
+                        editor.putString(Constant.SP_SHOP_ADDRESS, shopAddress);
+                        editor.putString(Constant.SP_SHOP_EMAIL, shopEmail);
+                        editor.putString(Constant.SP_SHOP_CONTACT, shopContact);
+                        editor.putString(Constant.SP_TAX, tax);
 
 
+                        //Saving values to Share preference
+                        editor.apply();
 
                     }
 
@@ -114,7 +124,7 @@ public class ShopInformationActivity extends BaseActivity {
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<ShopInformation>> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<ShopInformation> call, @NonNull Throwable t) {
 
                 loading.dismiss();
                 Toast.makeText(ShopInformationActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
