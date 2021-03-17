@@ -8,10 +8,10 @@ public class Product {
     @SerializedName("product_id")
     private String productId;
 
-    @SerializedName("name")
+    @SerializedName("product_name")
     private String productName;
 
-    @SerializedName("barcode_type")
+    @SerializedName("product_code")
     private String product_code;
 
     @SerializedName("category_id")
@@ -24,7 +24,7 @@ public class Product {
     private String productDescription;
 
 
-    @SerializedName("selling_price")
+    @SerializedName("product_sell_price")
     private String productSellPrice;
 
 
@@ -44,7 +44,7 @@ public class Product {
     private String productWeightUnitId;
 
 
-    @SerializedName("product_supplier_id")
+    @SerializedName("supplier_id")
     private String productSupplierId;
 
     @SerializedName("suppliers_name")
@@ -60,7 +60,7 @@ public class Product {
     private String value;
 
     @SerializedName("message")
-    private String massage;
+    private String message;
 
     public String getProductId() {
         return productId;
@@ -123,5 +123,8 @@ public class Product {
         return value;
     }
 
+    public String getMessage() {
+        return message;
+    }
 
 }

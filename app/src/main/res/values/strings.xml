@@ -151,6 +151,7 @@
     <string name="qr_barcode_scanner">QR or Barcode Scanner</string>
     <string name="camera_permission">Camera Permission Required</string>
     <string name="error">Error</string>
+    <string name="exist">Exist</string>
     <string name="order_receipt">Order Receipt</string>
     <string name="print">Print</string>
     <string name="share">Share</string>
@@ -218,5 +219,6 @@
     <string name="all">All</string>
     <string name="shop_closed_now">Shop Closed Now!</string>
     <string name="reset">RESET</string>
+    <string name="register">REGISTER</string>
 
 </resources>

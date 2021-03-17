@@ -64,7 +64,6 @@ public class LoginActivity extends BaseActivity {
             }
         }
 
-
         txtLogin.setOnClickListener(v -> {
             String email1 = etxtEmail.getText().toString().trim();
             String password1 = etxtPassword.getText().toString().trim();

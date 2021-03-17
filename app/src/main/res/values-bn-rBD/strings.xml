@@ -233,5 +233,6 @@
     <string name="all">সব </string>
     <string name="shop_closed_now">শপ এখন বন্ধ !</string>
     <string name="reset">রিসেট</string>
+    <string name="register">Register</string>
 
 </resources>

@@ -180,8 +180,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
     private void deleteProduct(String productId) {
 
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-
-        Call<Product> call = apiInterface.deleteProduct(productId);
+        String staffId = sp.getString(Constant.SP_STAFF_ID, "");
+        Call<Product> call = apiInterface.deleteProduct(staffId, productId);
         call.enqueue(new Callback<Product>() {
             @Override
             public void onResponse(@NonNull Call<Product> call, @NonNull Response<Product> response) {
@@ -190,10 +190,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
                 if (response.isSuccessful() && response.body() != null) {
 
                     String value = response.body().getValue();
-
                     if (value.equals(Constant.KEY_SUCCESS)) {
                         Toasty.error(context, R.string.product_deleted, Toast.LENGTH_SHORT).show();
                         notifyDataSetChanged();
+                    } else if (value.equals(Constant.KEY_EXIST)) {
+                        Toasty.error(context, response.body().getMessage(), Toast.LENGTH_SHORT).show();
 
                     } else if (value.equals(Constant.KEY_FAILURE)) {
                         Toasty.error(context, R.string.error, Toast.LENGTH_SHORT).show();

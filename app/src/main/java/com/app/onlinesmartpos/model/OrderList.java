@@ -4,8 +4,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class OrderList {
 
-
-
     @SerializedName("order_id")
     private String orderId;
 
@@ -20,10 +18,8 @@ public class OrderList {
     @SerializedName("order_type")
     private String orderType;
 
-
     @SerializedName("order_price")
     private String orderPrice;
-
 
     @SerializedName("order_payment_method")
     private String orderPaymentMethod;
@@ -40,13 +36,11 @@ public class OrderList {
     @SerializedName("order_note")
     private String orderNote;
 
-
     @SerializedName("served_by")
     private String servedBy;
 
     @SerializedName("value")
     private String value;
-
 
     public String getInvoiceId() {
         return invoiceId;
@@ -71,7 +65,6 @@ public class OrderList {
     public String getOrderPaymentMethod() {
         return orderPaymentMethod;
     }
-
 
     public String getValue() {
         return value;
@@ -100,8 +93,5 @@ public class OrderList {
     public String getOrderPrice() {
         return orderPrice;
     }
-
-
-
 
 }

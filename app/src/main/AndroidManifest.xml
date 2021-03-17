@@ -23,6 +23,7 @@
         android:theme="@style/AppTheme">
         <activity android:name="com.app.onlinesmartpos.about.AboutActivity"/>
         <activity android:name="com.app.onlinesmartpos.login.LoginActivity" />
+        <activity android:name="com.app.onlinesmartpos.register.RegisterActivity" />
         <activity android:name="com.app.onlinesmartpos.settings.payment_method.EditPaymentMethodActivity" />
         <activity android:name="com.app.onlinesmartpos.settings.payment_method.AddPaymentMethodActivity" />
         <activity android:name="com.app.onlinesmartpos.settings.payment_method.PaymentMethodActivity" />

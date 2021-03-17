@@ -481,7 +481,8 @@ public class AddProductActivity extends BaseActivity {
 
 
         ApiInterface getResponse = ApiClient.getApiClient().create(ApiInterface.class);
-        Call<Product> call = getResponse.addProduct(fileToUpload, filename,name,code,category,description,sellPrice,weight,weightUnitId,supplierId,stock);
+        String staffId = sp.getString(Constant.SP_STAFF_ID, "");
+        Call<Product> call = getResponse.addProduct(fileToUpload, staffId, filename,name,code,category,description,sellPrice,weight,weightUnitId,supplierId,stock);
         call.enqueue(new Callback<Product>() {
             @Override
             public void onResponse(@NonNull Call<Product> call, @NonNull Response<Product> response) {
@@ -509,7 +510,7 @@ public class AddProductActivity extends BaseActivity {
                             Toasty.error(AddProductActivity.this, R.string.failed, Toast.LENGTH_SHORT).show();
                         }
 
-                    }
+                }
 
                 else
                 {
@@ -517,7 +518,7 @@ public class AddProductActivity extends BaseActivity {
                     Log.d("Error",response.errorBody().toString());
                 }
 
-                }
+            }
 
 
 

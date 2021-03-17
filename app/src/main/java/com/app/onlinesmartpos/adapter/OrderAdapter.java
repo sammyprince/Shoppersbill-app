@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,12 +40,14 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
     Context context;
     private List<OrderList> orderData;
     Utils utils;
+    SharedPreferences sp;
 
 
     public OrderAdapter(Context context, List<OrderList> orderData) {
         this.context = context;
         this.orderData = orderData;
         utils = new Utils();
+        sp = context.getSharedPreferences(Constant.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
 
     }
@@ -185,8 +188,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
     private void deleteOrder(String invoiceId) {
 
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-
-        Call<OrderList> call = apiInterface.deleteOrder(invoiceId);
+        String staffId = sp.getString(Constant.SP_STAFF_ID, "");
+        Call<OrderList> call = apiInterface.deleteOrder(staffId, invoiceId);
         call.enqueue(new Callback<OrderList>() {
             @Override
             public void onResponse(@NonNull Call<OrderList> call, @NonNull Response<OrderList> response) {

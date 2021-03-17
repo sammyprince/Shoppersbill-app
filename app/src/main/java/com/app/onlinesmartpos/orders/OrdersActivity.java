@@ -1,5 +1,6 @@
 package com.app.onlinesmartpos.orders;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,12 +11,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.app.onlinesmartpos.Constant;
 import com.app.onlinesmartpos.R;
 import com.app.onlinesmartpos.adapter.OrderAdapter;
 import com.app.onlinesmartpos.model.OrderList;
@@ -42,7 +45,7 @@ public class OrdersActivity extends BaseActivity {
     EditText etxtSearch;
     private ShimmerFrameLayout mShimmerViewContainer;
     SwipeRefreshLayout mSwipeRefreshLayout;
-
+    SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +65,7 @@ public class OrdersActivity extends BaseActivity {
 
         imgNoProduct.setVisibility(View.GONE);
         txtNoProducts.setVisibility(View.GONE);
+        sp = getSharedPreferences(Constant.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
         getSupportActionBar().setHomeButtonEnabled(true); //for back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);//for back button
@@ -153,7 +157,8 @@ public class OrdersActivity extends BaseActivity {
 
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         Call<List<OrderList>> call;
-        call = apiInterface.getOrders(searchText);
+        String staffId = sp.getString(Constant.SP_STAFF_ID, "");
+        call = apiInterface.getOrders(staffId, searchText);
 
         call.enqueue(new Callback<List<OrderList>>() {
             @Override

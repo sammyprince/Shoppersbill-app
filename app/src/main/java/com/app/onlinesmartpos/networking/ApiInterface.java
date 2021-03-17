@@ -41,8 +41,6 @@ public interface ApiInterface {
             @Field(Constant.KEY_EMAIL) String email,
             @Field(Constant.KEY_PASSWORD) String password);
 
-
-
     //calling json array , need list
     @POST("orders/update_item")
     Call<String> submitOrders(
@@ -63,6 +61,7 @@ public interface ApiInterface {
     //get customers data
     @GET("orders/list")
     Call<List<OrderList>> getOrders(
+            @Query(Constant.SP_STAFF_ID) String staffId,
             @Query(Constant.SEARCH_TEXT) String searchText
     );
 
@@ -231,14 +230,16 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("orders/delete_item")
     Call<OrderList> deleteOrder(
+            @Field(Constant.SP_STAFF_ID) String staffId,
             @Field(Constant.INVOICE_ID) String invoiceId
     );
 
 
     //delete product
     @FormUrlEncoded
-    @POST("delete_product")
+    @POST("products/delete_item")
     Call<Product> deleteProduct(
+            @Field(Constant.SP_STAFF_ID) String staffId,
             @Field(Constant.PRODUCT_ID) String productId
     );
 
@@ -276,8 +277,9 @@ public interface ApiInterface {
 
     //for upload image and info
     @Multipart
-    @POST("add_product")
+    @POST("products/add_item")
     Call<Product> addProduct(@Part MultipartBody.Part file,
+                             @Part(Constant.SP_STAFF_ID) String staffId,
                              @Part(Constant.KEY_FILE) RequestBody name,
                              @Part(Constant.PRODUCT_NAME) RequestBody productName,
                              @Part(Constant.PRODUCT_CODE) RequestBody productCode,
@@ -292,7 +294,7 @@ public interface ApiInterface {
 
     //for upload image and info
     @Multipart
-    @POST("products/update_product")
+    @POST("products/update_item")
     Call<Product> updateProduct(@Part MultipartBody.Part file,
                                 @Part(Constant.KEY_FILE) RequestBody name,
                                 @Part(Constant.PRODUCT_NAME) RequestBody productName,
