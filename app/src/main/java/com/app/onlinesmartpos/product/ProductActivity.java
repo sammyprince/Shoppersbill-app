@@ -177,8 +177,8 @@ public class ProductActivity extends BaseActivity {
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         Call<List<Product>> call;
         String staffId = sp.getString(Constant.SP_STAFF_ID, "");
-
-        call = apiInterface.getProducts(staffId, searchText);
+        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
+        call = apiInterface.getProducts(auth_token, staffId, searchText);
 
         call.enqueue(new Callback<List<Product>>() {
             @Override

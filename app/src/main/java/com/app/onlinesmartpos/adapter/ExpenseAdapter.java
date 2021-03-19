@@ -171,7 +171,8 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.MyViewHo
 
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
 
-        Call<Expense> call = apiInterface.deleteExpense(expenseId);
+        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
+        Call<Expense> call = apiInterface.deleteExpense(auth_token, expenseId);
         call.enqueue(new Callback<Expense>() {
             @Override
             public void onResponse(@NonNull Call<Expense> call, @NonNull Response<Expense> response) {

@@ -121,7 +121,8 @@ public class ProductCategoryAdapter extends RecyclerView.Adapter<ProductCategory
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         Call<List<Product>> call;
         String staffId = sp.getString(Constant.SP_STAFF_ID, "");
-        call = apiInterface.searchProductByCategory(staffId, categoryId);
+        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
+        call = apiInterface.searchProductByCategory(auth_token, staffId, categoryId);
 
         call.enqueue(new Callback<List<Product>>() {
             @Override

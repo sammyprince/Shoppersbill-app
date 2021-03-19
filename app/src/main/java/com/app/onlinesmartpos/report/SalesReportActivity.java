@@ -165,7 +165,8 @@ public class SalesReportActivity extends BaseActivity {
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         Call<SalesReport> call;
         String staffId = sp.getString(Constant.SP_STAFF_ID, "");
-        call = apiInterface.getSalesReport(staffId, type);
+        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
+        call = apiInterface.getSalesReport(auth_token, staffId, type);
 
         call.enqueue(new Callback<SalesReport>() {
             @Override
@@ -240,7 +241,8 @@ public class SalesReportActivity extends BaseActivity {
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         Call<List<OrderDetails>> call;
         String staffId = sp.getString(Constant.SP_STAFF_ID, "");
-        call = apiInterface.getReportList(staffId, type);
+        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
+        call = apiInterface.getReportList(auth_token, staffId, type);
 
         call.enqueue(new Callback<List<OrderDetails>>() {
             @Override

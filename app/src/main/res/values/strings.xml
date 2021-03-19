@@ -48,6 +48,8 @@
     <string name="product_weight_cannot_be_empty">Product weight can\'t be empty!</string>
     <string name="product_successfully_added">Product Successfully Added</string>
     <string name="something_went_wrong">Something went wrong</string>
+    <string name="subscribe_succeed">Subscribe Succeed!</string>
+    <string name="subscribe_failed">Subscribe Failed!</string>
 
 
     <string name="add_product">Add Product</string>
@@ -170,6 +172,7 @@
     <string name="update_successfully">Update Successfully</string>
     <string name="categories">Categories</string>
     <string name="category_name">Category Name</string>
+    <string name="package_name">Package Name</string>
     <string name="payment_method_deleted">Payment Method Deleted</string>
     <string name="want_to_delete">Want to delete ?</string>
     <string name="all_payment_method">All Payment Method</string>
@@ -186,6 +189,7 @@
     <string name="logout">Logout</string>
     <string name="you_dont_have_permission_to_access_this_page">You don\'t have permission to access this page</string>
     <string name="about_us">About US</string>
+    <string name="purchase_subscribe">Purchase Subscribe</string>
     <string name="want_to_logout_from_app">Want to logout from app ?</string>
     <string name="delete">DELETE</string>
     <string name="tax">Tax</string>
@@ -220,5 +224,6 @@
     <string name="shop_closed_now">Shop Closed Now!</string>
     <string name="reset">RESET</string>
     <string name="register">REGISTER</string>
+    <string name="subscribe">Subscribe</string>
 
 </resources>

@@ -204,7 +204,8 @@ public class AddExpenseActivity extends BaseActivity {
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
 
         String staffId = sp.getString(Constant.SP_STAFF_ID, "");
-        Call<Expense> call = apiInterface.addExpense(staffId,name,amount,note,date,time);
+        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
+        Call<Expense> call = apiInterface.addExpense(auth_token, staffId,name,amount,note,date,time);
         call.enqueue(new Callback<Expense>() {
             @Override
             public void onResponse(@NonNull Call<Expense> call, @NonNull Response<Expense> response) {

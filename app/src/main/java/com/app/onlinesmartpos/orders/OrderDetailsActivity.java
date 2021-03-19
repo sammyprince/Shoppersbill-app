@@ -221,7 +221,8 @@ public class OrderDetailsActivity extends BaseActivity {
         loading.show();
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         Call<List<OrderDetails>> call;
-        call = apiInterface.OrderDetailsByInvoice(invoiceId);
+        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
+        call = apiInterface.OrderDetailsByInvoice(auth_token, invoiceId);
 
         call.enqueue(new Callback<List<OrderDetails>>() {
             @Override

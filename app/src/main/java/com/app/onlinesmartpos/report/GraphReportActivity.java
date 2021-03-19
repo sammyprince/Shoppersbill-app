@@ -122,7 +122,8 @@ public class GraphReportActivity extends BaseActivity {
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         Call<MonthData> call;
         String staffId = sp.getString(Constant.SP_STAFF_ID, "");
-        call = apiInterface.getMonthlySales(staffId);
+        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
+        call = apiInterface.getMonthlySales(auth_token, staffId);
 
         call.enqueue(new Callback<MonthData>() {
             @Override

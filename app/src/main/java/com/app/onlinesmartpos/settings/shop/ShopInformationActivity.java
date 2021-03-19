@@ -68,7 +68,8 @@ public class ShopInformationActivity extends BaseActivity {
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         Call<ShopInformation> call;
         String staffId = sp.getString(Constant.SP_STAFF_ID, "");
-        call = apiInterface.shopInformation(staffId);
+        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
+        call = apiInterface.shopInformation(auth_token, staffId);
 
         call.enqueue(new Callback<ShopInformation>() {
             @Override

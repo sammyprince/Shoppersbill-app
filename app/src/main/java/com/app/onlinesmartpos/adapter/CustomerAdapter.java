@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,12 +38,14 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.MyView
     private List<Customer> customerData;
     private Context context;
     Utils utils;
+    SharedPreferences sp;
 
 
     public CustomerAdapter(Context context, List<Customer> customerData) {
         this.context = context;
         this.customerData = customerData;
         utils=new Utils();
+        sp = context.getSharedPreferences(Constant.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
     }
 
@@ -169,7 +172,8 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.MyView
 
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
 
-        Call<Customer> call = apiInterface.deleteCustomer(customerId);
+        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
+        Call<Customer> call = apiInterface.deleteCustomer(auth_token, customerId);
         call.enqueue(new Callback<Customer>() {
             @Override
             public void onResponse(@NonNull Call<Customer> call, @NonNull Response<Customer> response) {

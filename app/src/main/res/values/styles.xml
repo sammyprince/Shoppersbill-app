@@ -15,4 +15,21 @@
         <item name="mrl_rippleHover">true</item>
         <item name="mrl_rippleAlpha">0.2</item>
     </style>
+
+    <style name="Subscribe_Title_View">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">80dp</item>
+        <item name="android:background">@android:color/holo_blue_light</item>
+        <item name="android:padding">15dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="Subscribe_Item_View">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
 </resources>

@@ -223,5 +223,6 @@
     <string name="shop_closed_now">¡Tienda cerrada ahora!</string>
     <string name="reset">Reiniciar</string>
     <string name="register">Register</string>
+    <string name="subscribe">subscribe</string>
 
 </resources>

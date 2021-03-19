@@ -111,7 +111,8 @@ public class AddCustomersActivity extends BaseActivity {
        ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
 
         String staffId = sp.getString(Constant.SP_STAFF_ID, "");
-        Call<Customer> call = apiInterface.addCustomer(staffId, name, cell, email, address);
+        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
+        Call<Customer> call = apiInterface.addCustomer(auth_token, staffId, name, cell, email, address);
         call.enqueue(new Callback<Customer>() {
             @Override
             public void onResponse(@NonNull Call<Customer> call, @NonNull Response<Customer> response) {

@@ -3,6 +3,7 @@ package com.app.onlinesmartpos.expense;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 
@@ -37,6 +39,7 @@ public class EditExpenseActivity extends BaseActivity {
     String dateTime = "";
     int mYear, mMonth, mDay, mHour, mMinute;
     ProgressDialog loading;
+    SharedPreferences sp;
 
 
     EditText etxtExpenseName, etxtExpenseNote, etxtExpenseAmount, etxtDate, etxtTime;
@@ -52,6 +55,7 @@ public class EditExpenseActivity extends BaseActivity {
         getSupportActionBar().setHomeButtonEnabled(true); //for back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);//for back button
         getSupportActionBar().setTitle(R.string.edit_expense);
+        sp = getSharedPreferences(Constant.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
         etxtExpenseName = findViewById(R.id.etxt_expense_name);
         etxtExpenseNote = findViewById(R.id.etxt_expense_note);
@@ -242,7 +246,8 @@ public class EditExpenseActivity extends BaseActivity {
         loading.show();
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
 
-        Call<Expense> call = apiInterface.updateExpense(id,name,amount,note,date,time);
+        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
+        Call<Expense> call = apiInterface.updateExpense(auth_token, id,name,amount,note,date,time);
         call.enqueue(new Callback<Expense>() {
             @Override
             public void onResponse(@NonNull Call<Expense> call, @NonNull Response<Expense> response) {

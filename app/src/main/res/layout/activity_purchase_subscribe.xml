@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.app.onlinesmartpos.about.AboutActivity">
+
+    <TextView
+        android:id="@+id/subscribe_name"
+        style="@style/Subscribe_Title_View"
+        android:text="Subscribe Name"
+        app:autoSizeMaxTextSize="50dp"
+        app:autoSizeMinTextSize="12dp"
+        app:autoSizeStepGranularity="2dp"
+        app:autoSizeTextType="uniform" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/subscribe_business_location"
+                style="@style/Subscribe_Item_View"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_margin="10dp"
+                android:drawableLeft="@drawable/ic_check_white_24dp"
+                android:text="Business Locations"
+                android:textColor="@color/cardview_dark_background"
+                app:autoSizeMaxTextSize="40dp"
+                app:autoSizeMinTextSize="10dp"
+                app:autoSizeTextType="uniform"
+                app:drawableTint="@android:color/holo_green_light" />
+
+            <TextView
+                android:id="@+id/subscribe_user"
+                style="@style/Subscribe_Item_View"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_margin="10dp"
+                android:drawableLeft="@drawable/ic_check_white_24dp"
+                android:text="Users"
+                android:textColor="@color/cardview_dark_background"
+                app:autoSizeMaxTextSize="40dp"
+                app:autoSizeMinTextSize="10dp"
+                app:autoSizeTextType="uniform"
+                app:drawableTint="@android:color/holo_green_light" />
+
+            <TextView
+                android:id="@+id/subscribe_product"
+                style="@style/Subscribe_Item_View"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_margin="10dp"
+                android:drawableLeft="@drawable/ic_check_white_24dp"
+                android:text="Products"
+                android:textColor="@color/cardview_dark_background"
+                app:autoSizeMaxTextSize="40dp"
+                app:autoSizeMinTextSize="10dp"
+                app:autoSizeTextType="uniform"
+                app:drawableTint="@android:color/holo_green_light" />
+
+            <TextView
+                android:id="@+id/subscribe_invoice"
+                style="@style/Subscribe_Item_View"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_margin="10dp"
+                android:drawableLeft="@drawable/ic_check_white_24dp"
+                android:text="Invoices"
+                android:textColor="@color/cardview_dark_background"
+                app:autoSizeMaxTextSize="40dp"
+                app:autoSizeMinTextSize="10dp"
+                app:autoSizeTextType="uniform"
+                app:drawableTint="@android:color/holo_green_light" />
+
+            <TextView
+                android:id="@+id/subscribe_trial_day"
+                style="@style/Subscribe_Item_View"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_margin="10dp"
+                android:drawableLeft="@drawable/ic_check_white_24dp"
+                android:text="Trial Day"
+                android:textColor="@color/cardview_dark_background"
+                app:autoSizeMaxTextSize="40dp"
+                app:autoSizeMinTextSize="10dp"
+                app:autoSizeTextType="uniform"
+                app:drawableTint="@android:color/holo_green_light" />
+
+            <LinearLayout
+                style="@style/Subscribe_Item_View"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_margin="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/subscribe_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:padding="5dp"
+                    android:text="Free"
+                    android:textAlignment="textEnd"
+                    android:textColor="@android:color/black"
+                    app:autoSizeTextType="uniform"
+                    tools:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/subscribe_interval"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:paddingTop="8dp"
+                    android:text="/ Months"
+                    android:textAlignment="gravity"
+                    app:autoSizeTextType="uniform" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/grey_10"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <Button
+                    android:id="@+id/subscribe_subscribe"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:background="@android:color/holo_green_dark"
+                    android:text="Subscribe"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/subscribe_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_margin="5dp"
+                    android:text="Description"
+                    android:textAlignment="center"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

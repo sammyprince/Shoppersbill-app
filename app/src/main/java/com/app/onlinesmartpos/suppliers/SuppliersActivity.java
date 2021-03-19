@@ -181,7 +181,8 @@ public class SuppliersActivity extends BaseActivity {
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         Call<List<Suppliers>> call;
         String staffId = sp.getString(Constant.SP_STAFF_ID, "");
-        call = apiInterface.getSuppliers(staffId, searchText);
+        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
+        call = apiInterface.getSuppliers(auth_token, staffId, searchText);
 
         call.enqueue(new Callback<List<Suppliers>>() {
             @Override

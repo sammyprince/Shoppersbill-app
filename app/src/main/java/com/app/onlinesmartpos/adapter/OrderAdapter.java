@@ -189,7 +189,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
 
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         String staffId = sp.getString(Constant.SP_STAFF_ID, "");
-        Call<OrderList> call = apiInterface.deleteOrder(staffId, invoiceId);
+        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
+        Call<OrderList> call = apiInterface.deleteOrder(auth_token, staffId, invoiceId);
         call.enqueue(new Callback<OrderList>() {
             @Override
             public void onResponse(@NonNull Call<OrderList> call, @NonNull Response<OrderList> response) {

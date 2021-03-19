@@ -271,8 +271,8 @@ public class ProductCart extends BaseActivity {
 
         RequestBody body2 = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), String.valueOf(obj));
 
-
-        Call<String> call = apiInterface.submitOrders(body2);
+        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
+        Call<String> call = apiInterface.submitOrders(auth_token, body2);
 
         call.enqueue(new Callback<String>() {
             @Override
@@ -687,7 +687,8 @@ public class ProductCart extends BaseActivity {
         Call<List<Customer>> call;
 
         String staffId = sp.getString(Constant.SP_STAFF_ID, "");
-        call = apiInterface.getCustomers(staffId,"");
+        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
+        call = apiInterface.getCustomers(staffId,"", auth_token);
 
         call.enqueue(new Callback<List<Customer>>() {
             @Override

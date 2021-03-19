@@ -181,7 +181,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
 
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         String staffId = sp.getString(Constant.SP_STAFF_ID, "");
-        Call<Product> call = apiInterface.deleteProduct(staffId, productId);
+        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
+        Call<Product> call = apiInterface.deleteProduct(auth_token, staffId, productId);
         call.enqueue(new Callback<Product>() {
             @Override
             public void onResponse(@NonNull Call<Product> call, @NonNull Response<Product> response) {

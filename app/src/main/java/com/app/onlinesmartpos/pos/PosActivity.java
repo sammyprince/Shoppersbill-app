@@ -196,8 +196,8 @@ public class PosActivity extends BaseActivity {
 
         Call<List<Category>> call;
 
-
-        call = apiInterface.getCategory();
+        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
+        call = apiInterface.getCategory(auth_token);
 
         call.enqueue(new Callback<List<Category>>() {
             @Override
@@ -253,7 +253,8 @@ public class PosActivity extends BaseActivity {
 
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         Call<List<Product>> call;
-        call = apiInterface.getProducts(staffId, searchText);
+        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
+        call = apiInterface.getProducts(auth_token, staffId, searchText);
 
         call.enqueue(new Callback<List<Product>>() {
             @Override

@@ -461,28 +461,38 @@ public class AddProductActivity extends BaseActivity {
         loading.setMessage(getString(R.string.please_wait));
         loading.show();
 
-        // Map is used to multipart the file using okhttp3.RequestBody
-        File file = new File(mediaPath);
-
-        // Parsing any Media type file
-        RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
-        MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", file.getName(), requestBody);
-        RequestBody filename = RequestBody.create(MediaType.parse("text/plain"), file.getName());
-
-        RequestBody name = RequestBody.create(MediaType.parse("text/plain"), productName);
-        RequestBody code = RequestBody.create(MediaType.parse("text/plain"), productCode);
-        RequestBody category = RequestBody.create(MediaType.parse("text/plain"), productCategoryId);
-        RequestBody description = RequestBody.create(MediaType.parse("text/plain"), productDescription);
-        RequestBody sellPrice = RequestBody.create(MediaType.parse("text/plain"), productSellPrice);
-        RequestBody weight = RequestBody.create(MediaType.parse("text/plain"), productWeight);
-        RequestBody weightUnitId = RequestBody.create(MediaType.parse("text/plain"), productWeightUnitId);
-        RequestBody supplierId = RequestBody.create(MediaType.parse("text/plain"), productSupplierId);
-        RequestBody stock = RequestBody.create(MediaType.parse("text/plain"),productStock);
-
-
         ApiInterface getResponse = ApiClient.getApiClient().create(ApiInterface.class);
         String staffId = sp.getString(Constant.SP_STAFF_ID, "");
-        Call<Product> call = getResponse.addProduct(fileToUpload, staffId, filename,name,code,category,description,sellPrice,weight,weightUnitId,supplierId,stock);
+        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
+        Call<Product> call;
+
+        // Map is used to multipart the file using okhttp3.RequestBody
+        if(mediaPath != null) {
+            File file = new File(mediaPath);
+            // Parsing any Media type file
+            RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
+
+            MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", file.getName(), requestBody);
+
+            RequestBody filename = RequestBody.create(MediaType.parse("text/plain"), file.getName());
+            RequestBody name = RequestBody.create(MediaType.parse("text/plain"), productName);
+            RequestBody code = RequestBody.create(MediaType.parse("text/plain"), productCode);
+            RequestBody category = RequestBody.create(MediaType.parse("text/plain"), productCategoryId);
+            RequestBody description = RequestBody.create(MediaType.parse("text/plain"), productDescription);
+            RequestBody sellPrice = RequestBody.create(MediaType.parse("text/plain"), productSellPrice);
+            RequestBody weight = RequestBody.create(MediaType.parse("text/plain"), productWeight);
+            RequestBody weightUnitId = RequestBody.create(MediaType.parse("text/plain"), productWeightUnitId);
+            RequestBody supplierId = RequestBody.create(MediaType.parse("text/plain"), productSupplierId);
+            RequestBody stock = RequestBody.create(MediaType.parse("text/plain"),productStock);
+            call = getResponse.addProduct(auth_token, fileToUpload, staffId, filename,name,code,category,description,sellPrice,weight,weightUnitId,supplierId,stock);
+        }
+        else
+        {
+            call = getResponse.addProduct_without_file(auth_token, staffId, productName, productCode, productCategoryId, productDescription, productSellPrice, productWeight, productWeightUnitId, productSupplierId, productStock);
+        }
+
+
+
         call.enqueue(new Callback<Product>() {
             @Override
             public void onResponse(@NonNull Call<Product> call, @NonNull Response<Product> response) {
@@ -541,8 +551,8 @@ public class AddProductActivity extends BaseActivity {
 
         Call<List<Category>> call;
 
-
-        call = apiInterface.getCategory();
+        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
+        call = apiInterface.getCategory(auth_token);
 
         call.enqueue(new Callback<List<Category>>() {
             @Override
@@ -584,7 +594,8 @@ public class AddProductActivity extends BaseActivity {
         Call<List<Suppliers>> call;
 
         String staffId = sp.getString(Constant.SP_STAFF_ID, "");
-        call = apiInterface.getSuppliers(staffId, "");
+        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
+        call = apiInterface.getSuppliers(auth_token, staffId, "");
 
         call.enqueue(new Callback<List<Suppliers>>() {
             @Override
@@ -624,7 +635,8 @@ public class AddProductActivity extends BaseActivity {
 
         Call<List<WeightUnit>> call;
 
-        call = apiInterface.getWeightUnits("");
+        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
+        call = apiInterface.getWeightUnits(auth_token, "");
 
         call.enqueue(new Callback<List<WeightUnit>>() {
             @Override

@@ -27,6 +27,8 @@
         <activity android:name="com.app.onlinesmartpos.settings.payment_method.AddPaymentMethodActivity" />
         <activity android:name="com.app.onlinesmartpos.settings.payment_method.PaymentMethodActivity" />
         <activity android:name="com.app.onlinesmartpos.settings.categories.CategoriesActivity" />
+        <activity android:name="com.app.onlinesmartpos.settings.subscribe.SubscribeActivity" />
+        <activity android:name="com.app.onlinesmartpos.settings.subscribe.PurchseSubscribeActivity" />
         <activity android:name="com.app.onlinesmartpos.expense.EditExpenseActivity" />
         <activity android:name="com.app.onlinesmartpos.suppliers.EditSuppliersActivity" />
         <activity android:name="com.app.onlinesmartpos.customers.EditCustomersActivity" />

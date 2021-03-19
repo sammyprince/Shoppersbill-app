@@ -1,6 +1,7 @@
 package com.app.onlinesmartpos.suppliers;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -10,7 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import android.content.SharedPreferences;
 import androidx.annotation.NonNull;
 
 import com.app.onlinesmartpos.Constant;
@@ -30,7 +31,7 @@ public class EditSuppliersActivity extends BaseActivity {
     EditText etxtSuppliersName, etxtSuppliersContactPerson, etxtSuppliersAddress, etxtSuppliersCell, etxtSuppliersEmail;
     TextView txtEditSuppliers, txtUpdateSuppliers;
     ProgressDialog loading;
-
+    SharedPreferences sp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +40,7 @@ public class EditSuppliersActivity extends BaseActivity {
         getSupportActionBar().setHomeButtonEnabled(true); //for back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);//for back button
         getSupportActionBar().setTitle(R.string.edit_suppliers);
-
+        sp = getSharedPreferences(Constant.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
         etxtSuppliersName = findViewById(R.id.etxt_supplier_name);
         etxtSuppliersContactPerson = findViewById(R.id.etxt_supplier_contact_name);
@@ -150,7 +151,8 @@ public class EditSuppliersActivity extends BaseActivity {
         loading.show();
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
 
-        Call<Suppliers> call = apiInterface.updateSupplier(suppliersId,name,contactPerson,cell,email,address);
+        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
+        Call<Suppliers> call = apiInterface.updateSupplier(auth_token, suppliersId,name,contactPerson,cell,email,address);
         call.enqueue(new Callback<Suppliers>() {
             @Override
             public void onResponse(@NonNull Call<Suppliers> call, @NonNull Response<Suppliers> response) {

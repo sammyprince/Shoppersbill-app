@@ -153,7 +153,8 @@ public class ExpenseReportActivity extends BaseActivity {
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         Call<List<Expense>> call;
         String staffId = sp.getString(Constant.SP_STAFF_ID, "");
-        call = apiInterface.getAllExpense(staffId, type);
+        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
+        call = apiInterface.getAllExpense(auth_token, staffId, type);
 
         call.enqueue(new Callback<List<Expense>>() {
             @Override
@@ -208,7 +209,8 @@ public class ExpenseReportActivity extends BaseActivity {
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         Call<ExpenseReport> call;
         String staffId = sp.getString(Constant.SP_STAFF_ID, "");
-        call = apiInterface.getExpenseReport(staffId, type);
+        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
+        call = apiInterface.getExpenseReport(auth_token, staffId, type);
 
         call.enqueue(new Callback<ExpenseReport>() {
             @Override

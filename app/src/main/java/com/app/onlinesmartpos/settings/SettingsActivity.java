@@ -11,12 +11,13 @@ import com.app.onlinesmartpos.R;
 import com.app.onlinesmartpos.settings.categories.CategoriesActivity;
 import com.app.onlinesmartpos.settings.payment_method.PaymentMethodActivity;
 import com.app.onlinesmartpos.settings.shop.ShopInformationActivity;
+import com.app.onlinesmartpos.settings.subscribe.SubscribeActivity;
 import com.app.onlinesmartpos.utils.BaseActivity;
 
 public class SettingsActivity extends BaseActivity {
 
 
-    CardView cardShopInfo,cardCategory,cardPaymentMethod;
+    CardView cardShopInfo,cardCategory,cardPaymentMethod,cardSubscription;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +31,7 @@ public class SettingsActivity extends BaseActivity {
         cardShopInfo = findViewById(R.id.card_shop_info);
         cardCategory=findViewById(R.id.card_category);
         cardPaymentMethod=findViewById(R.id.card_payment_method);
+        cardSubscription=findViewById(R.id.card_subscribe);
 
 
 
@@ -38,6 +40,14 @@ public class SettingsActivity extends BaseActivity {
             public void onClick(View v) {
 
                 Intent intent = new Intent(SettingsActivity.this, ShopInformationActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        cardSubscription.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SettingsActivity.this, SubscribeActivity.class);
                 startActivity(intent);
             }
         });

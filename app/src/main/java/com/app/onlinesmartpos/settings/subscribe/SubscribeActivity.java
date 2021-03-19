@@ -1,4 +1,4 @@
-package com.app.onlinesmartpos.settings.categories;
+package com.app.onlinesmartpos.settings.subscribe;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -6,18 +6,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
-import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import android.content.SharedPreferences;
 
 import com.app.onlinesmartpos.Constant;
 import com.app.onlinesmartpos.R;
-import com.app.onlinesmartpos.adapter.CategoryAdapter;
-import com.app.onlinesmartpos.model.Category;
+import com.app.onlinesmartpos.adapter.PackageAdapter;
+import com.app.onlinesmartpos.model.Package;
 import com.app.onlinesmartpos.networking.ApiClient;
 import com.app.onlinesmartpos.networking.ApiInterface;
+import com.app.onlinesmartpos.settings.categories.CategoriesActivity;
 import com.app.onlinesmartpos.utils.BaseActivity;
 import com.facebook.shimmer.ShimmerFrameLayout;
 
@@ -28,9 +29,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CategoriesActivity extends BaseActivity {
-
-
+public class SubscribeActivity extends BaseActivity {
     private RecyclerView recyclerView;
     SharedPreferences sp;
 
@@ -40,13 +39,13 @@ public class CategoriesActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_categories);
-
+        setContentView(R.layout.activity_subscribe);
+        sp = getSharedPreferences(Constant.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
         getSupportActionBar().setHomeButtonEnabled(true); //for back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);//for back button
-        getSupportActionBar().setTitle(R.string.categories);
-        sp = getSharedPreferences(Constant.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        getSupportActionBar().setTitle(R.string.subscribe);
+
         recyclerView = findViewById(R.id.recycler_view);
         imgNoProduct = findViewById(R.id.image_no_product);
 
@@ -61,41 +60,34 @@ public class CategoriesActivity extends BaseActivity {
 
         recyclerView.setHasFixedSize(true);
 
-        getProductCategory();
-
-
-
-
+        getSubscriptionPackages();
     }
 
 
 
 
-    public void getProductCategory() {
+    public void getSubscriptionPackages() {
 
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
 
-        Call<List<Category>> call;
-
+        Call<List<Package>> call;
 
         String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
-        call = apiInterface.getCategory(auth_token);
+        call = apiInterface.getPackages(auth_token);
 
-        call.enqueue(new Callback<List<Category>>() {
+        call.enqueue(new Callback<List<Package>>() {
             @Override
-            public void onResponse(@NonNull Call<List<Category>> call, @NonNull Response<List<Category>> response) {
+            public void onResponse(@NonNull Call<List<Package>> call, @NonNull Response<List<Package>> response) {
 
 
                 if (response.isSuccessful() && response.body() != null) {
 
+                    List<Package> subcriptionPackage;
+                    subcriptionPackage = response.body();
 
-
-                    List<Category> productCategory;
-                    productCategory = response.body();
-
-                    if (productCategory.isEmpty())
+                    if (subcriptionPackage.isEmpty())
                     {
-                        Toasty.info(CategoriesActivity.this, R.string.no_data_found, Toast.LENGTH_SHORT).show();
+                        Toasty.info(SubscribeActivity.this, R.string.no_data_found, Toast.LENGTH_SHORT).show();
                         imgNoProduct.setImageResource(R.drawable.no_data);
 
                         //Stopping Shimmer Effects
@@ -110,9 +102,9 @@ public class CategoriesActivity extends BaseActivity {
                         mShimmerViewContainer.stopShimmer();
                         mShimmerViewContainer.setVisibility(View.GONE);
 
-                        CategoryAdapter categoryAdapter = new CategoryAdapter(CategoriesActivity.this, productCategory);
+                        PackageAdapter packageAdapter = new PackageAdapter(SubscribeActivity.this, subcriptionPackage);
 
-                        recyclerView.setAdapter(categoryAdapter);
+                        recyclerView.setAdapter(packageAdapter);
 
                     }
 
@@ -123,7 +115,7 @@ public class CategoriesActivity extends BaseActivity {
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<Category>> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<List<Package>> call, @NonNull Throwable t) {
 
                 //write own action
             }
@@ -145,5 +137,4 @@ public class CategoriesActivity extends BaseActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 }

@@ -109,10 +109,8 @@ public class EditProductActivity extends BaseActivity {
 
         txtUpdate.setVisibility(View.GONE);
 
-
         productID = getIntent().getExtras().getString(Constant.PRODUCT_ID);
         getProductsData(productID);
-
 
         imgProduct.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -514,7 +512,8 @@ public class EditProductActivity extends BaseActivity {
         String staffId = sp.getString(Constant.SP_STAFF_ID, "");
 
         Call<Product> call;
-        call = apiInterface.getProductById(productId);
+        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
+        call = apiInterface.getProductById(auth_token, productId);
 
         call.enqueue(new Callback<Product>() {
             @Override
@@ -615,8 +614,8 @@ public class EditProductActivity extends BaseActivity {
 
         Call<List<Category>> call;
 
-
-        call = apiInterface.getCategory();
+        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
+        call = apiInterface.getCategory(auth_token);
 
         call.enqueue(new Callback<List<Category>>() {
             @Override
@@ -659,7 +658,8 @@ public class EditProductActivity extends BaseActivity {
 
 
         String staffId = sp.getString(Constant.SP_STAFF_ID, "");
-        call = apiInterface.getSuppliers(staffId, "");
+        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
+        call = apiInterface.getSuppliers(auth_token, staffId, "");
 
         call.enqueue(new Callback<List<Suppliers>>() {
             @Override
@@ -699,8 +699,8 @@ public class EditProductActivity extends BaseActivity {
 
         Call<List<WeightUnit>> call;
 
-
-        call = apiInterface.getWeightUnits("");
+        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
+        call = apiInterface.getWeightUnits(auth_token, "");
 
         call.enqueue(new Callback<List<WeightUnit>>() {
             @Override
@@ -780,12 +780,13 @@ public class EditProductActivity extends BaseActivity {
 
         ApiInterface getResponse = ApiClient.getApiClient().create(ApiInterface.class);
         Call<Product> call;
+        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
         if (mediaPath.equals("na"))
         {
-            call = getResponse.updateProductWithoutImage(name,code,category,description,sellPrice,weight,weightUnitId,supplierId,stock,getProductID);
+            call = getResponse.updateProductWithoutImage(auth_token, name,code,category,description,sellPrice,weight,weightUnitId,supplierId,stock,getProductID);
         }
         else {
-           call = getResponse.updateProduct(fileToUpload, filename, name, code, category, description, sellPrice, weight, weightUnitId, supplierId, stock, getProductID);
+           call = getResponse.updateProduct(auth_token, fileToUpload, filename, name, code, category, description, sellPrice, weight, weightUnitId, supplierId, stock, getProductID);
         }
         call.enqueue(new Callback<Product>() {
             @Override

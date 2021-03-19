@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,13 +38,14 @@ public class SupplierAdapter extends RecyclerView.Adapter<SupplierAdapter.MyView
     private List<Suppliers> supplierData;
     private Context context;
     Utils utils;
+    SharedPreferences sp;
 
 
     public SupplierAdapter(Context context, List<Suppliers> supplierData) {
         this.context = context;
         this.supplierData = supplierData;
         utils=new Utils();
-
+        sp = context.getSharedPreferences(Constant.SHARED_PREF_NAME, Context.MODE_PRIVATE);
     }
 
 
@@ -165,7 +167,8 @@ public class SupplierAdapter extends RecyclerView.Adapter<SupplierAdapter.MyView
 
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
 
-        Call<Suppliers> call = apiInterface.deleteSupplier(supplierId);
+        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
+        Call<Suppliers> call = apiInterface.deleteSupplier(auth_token, supplierId);
         call.enqueue(new Callback<Suppliers>() {
             @Override
             public void onResponse(@NonNull Call<Suppliers> call, @NonNull Response<Suppliers> response) {

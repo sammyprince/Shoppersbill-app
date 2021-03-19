@@ -118,7 +118,8 @@ public class AddSuppliersActivity extends BaseActivity {
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
 
         String staffId = sp.getString(Constant.SP_STAFF_ID, "");
-        Call<Suppliers> call = apiInterface.addSupplier(staffId, name,contactPerson,cell,email,address);
+        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
+        Call<Suppliers> call = apiInterface.addSupplier(auth_token, staffId, name,contactPerson,cell,email,address);
         call.enqueue(new Callback<Suppliers>() {
             @Override
             public void onResponse(@NonNull Call<Suppliers> call, @NonNull Response<Suppliers> response) {

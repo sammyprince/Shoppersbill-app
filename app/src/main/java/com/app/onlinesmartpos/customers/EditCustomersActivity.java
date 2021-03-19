@@ -1,6 +1,7 @@
 package com.app.onlinesmartpos.customers;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 
@@ -32,6 +34,7 @@ public class EditCustomersActivity extends BaseActivity {
     EditText etxtCustomerName, etxtAddress, etxtCustomerCell, etxtCustomerEmail;
     TextView txtEditCustomer, txtUpdateInformation;
     String getCustomerId, getCustomerName, getCustomerCell, getCustomerEmail, getCustomerAddress;
+    SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +44,7 @@ public class EditCustomersActivity extends BaseActivity {
         getSupportActionBar().setHomeButtonEnabled(true); //for back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);//for back button
         getSupportActionBar().setTitle(R.string.edit_customer);
+        sp = getSharedPreferences(Constant.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
 
         etxtCustomerName = findViewById(R.id.etxt_customer_name);
@@ -140,7 +144,8 @@ public class EditCustomersActivity extends BaseActivity {
 
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
 
-        Call<Customer> call = apiInterface.updateCustomer(id,name,cell,email,address);
+        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
+        Call<Customer> call = apiInterface.updateCustomer(auth_token, id,name,cell,email,address);
         call.enqueue(new Callback<Customer>() {
             @Override
             public void onResponse(@NonNull Call<Customer> call, @NonNull Response<Customer> response) {

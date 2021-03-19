@@ -164,7 +164,8 @@ public class ExpenseActivity extends BaseActivity {
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         Call<List<Expense>> call;
         String staffId = sp.getString(Constant.SP_STAFF_ID, "");
-        call = apiInterface.getExpense(staffId, searchText);
+        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
+        call = apiInterface.getExpense(auth_token, staffId, searchText);
 
         call.enqueue(new Callback<List<Expense>>() {
             @Override

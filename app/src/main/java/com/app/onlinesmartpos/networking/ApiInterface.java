@@ -3,6 +3,7 @@ package com.app.onlinesmartpos.networking;
 
 import com.app.onlinesmartpos.Constant;
 import com.app.onlinesmartpos.model.Category;
+import com.app.onlinesmartpos.model.Package;
 import com.app.onlinesmartpos.model.Customer;
 import com.app.onlinesmartpos.model.Expense;
 import com.app.onlinesmartpos.model.ExpenseReport;
@@ -15,6 +16,7 @@ import com.app.onlinesmartpos.model.SalesReport;
 import com.app.onlinesmartpos.model.ShopInformation;
 import com.app.onlinesmartpos.model.Suppliers;
 import com.app.onlinesmartpos.model.WeightUnit;
+import com.app.onlinesmartpos.model.Subscribe;
 
 import java.util.List;
 
@@ -25,6 +27,8 @@ import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -42,25 +46,30 @@ public interface ApiInterface {
             @Field(Constant.KEY_PASSWORD) String password);
 
     //calling json array , need list
+    @FormUrlEncoded
     @POST("orders/update_item")
     Call<String> submitOrders(
+            @Header("Authorization") String auth,
             @Body RequestBody ordersData
     );
 
 
 
     //get customers data
+    
     @GET("customers/list")
     Call<List<Customer>> getCustomers(
             @Query(Constant.SP_STAFF_ID) String staffId,
-            @Query(Constant.SEARCH_TEXT) String searchText
-
+            @Query(Constant.SEARCH_TEXT) String searchText,
+            @Header("Authorization") String auth
     );
 
 
     //get customers data
+    
     @GET("orders/list")
     Call<List<OrderList>> getOrders(
+            @Header("Authorization") String auth,
             @Query(Constant.SP_STAFF_ID) String staffId,
             @Query(Constant.SEARCH_TEXT) String searchText
     );
@@ -69,40 +78,51 @@ public interface ApiInterface {
     //get customers data
     @GET("products/list")
     Call<List<Product>> getProducts(
+            @Header("Authorization") String auth,
             @Query(Constant.SP_STAFF_ID) String staffId,
             @Query(Constant.SEARCH_TEXT) String searchText
     );
 
 
     //get product data
+    
     @GET("products/item")
     Call<Product> getProductById(
+            @Header("Authorization") String auth,
             @Query(Constant.PRODUCT_ID) String productId
     );
 
 
 
+    
     @GET("orders/list_invoice")
     Call<List<OrderDetails>> OrderDetailsByInvoice(
+            @Header("Authorization") String auth,
             @Query(Constant.INVOICE_ID) String invoiceId
     );
 
+    
     @GET("reports/sales_list")
     Call<List<OrderDetails>> getReportList(
+            @Header("Authorization") String auth,
             @Query(Constant.SP_STAFF_ID) String staffId,
             @Query(Constant.KEY_TYPE) String type
     );
 
 
+    
     @GET("shop_info")
     Call<ShopInformation> shopInformation(
+            @Header("Authorization") String auth,
             @Query(Constant.SP_STAFF_ID) String staffId
     );
 
 
 
+    
     @GET("reports/sales_total")
     Call<SalesReport> getSalesReport(
+            @Header("Authorization") String auth,
             @Query(Constant.SP_STAFF_ID) String staffId,
             @Query(Constant.KEY_TYPE) String type
     );
@@ -110,37 +130,53 @@ public interface ApiInterface {
 
 
     //get expense data
+    
     @GET("reports/expense_total")
     Call<ExpenseReport> getExpenseReport(
+            @Header("Authorization") String auth,
             @Query(Constant.SP_STAFF_ID) String staffId,
             @Query(Constant.KEY_TYPE) String type
     );
 
 
     //for monthly expense data
+    
     @GET("reports/monthly_expenses")
     Call<MonthData> getMonthlyExpense(
+            @Header("Authorization") String auth,
             @Query(Constant.SP_STAFF_ID) String staffId
     );
 
 
     //for monthly sales data
+    
     @GET("reports/monthly_sales")
     Call<MonthData> getMonthlySales(
+            @Header("Authorization") String auth,
             @Query(Constant.SP_STAFF_ID) String staffId
     );
 
 
 
     //for category data
+    
     @GET("category")
-    Call<List<Category>> getCategory();
+    Call<List<Category>> getCategory(
+            @Header("Authorization") String auth
+    );
+
+    @GET("pricing/packages")
+    Call<List<Package>> getPackages(
+            @Header("Authorization") String auth
+    );
 
 
 
     //for product data
+    
     @GET("products/list_category")
     Call<List<Product>> searchProductByCategory(
+            @Header("Authorization") String auth,
             @Query(Constant.SP_STAFF_ID) String staffId,
             @Query(Constant.KEY_CATEGORY_ID) String categoryId
     );
@@ -152,17 +188,26 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("customers/add_item")
     Call<Customer> addCustomer(
+            @Header("Authorization") String auth,
             @Field(Constant.SP_STAFF_ID) String staffId,
             @Field(Constant.CUSTOMER_NAME) String name,
             @Field(Constant.CUSTOMER_CELL) String cell,
             @Field(Constant.CUSTOMER_EMAIL) String email,
             @Field(Constant.CUSTOMER_ADDRESS) String address);
 
+    //add customer data to server
+    @FormUrlEncoded
+    @POST("pricing/purchase")
+    Call<Subscribe> purchaseSubscribe(
+            @Header("Authorization") String auth,
+            @Field(Constant.SP_STAFF_ID) String staffId);
+
 
     //add expense data to server
     @FormUrlEncoded
     @POST("expenses/add_item")
     Call<Expense> addExpense(
+            @Header("Authorization") String auth,
             @Field(Constant.SP_STAFF_ID) String staffId,
             @Field(Constant.EXPENSE_NAME) String name,
             @Field(Constant.EXPENSE_AMOUNT) String amount,
@@ -175,6 +220,7 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("expenses/update_item")
     Call<Expense> updateExpense(
+            @Header("Authorization") String auth,
             @Field(Constant.EXPENSE_ID) String id,
             @Field(Constant.EXPENSE_NAME) String name,
             @Field(Constant.EXPENSE_AMOUNT) String amount,
@@ -187,6 +233,7 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("suppliers/add_item")
     Call<Suppliers> addSupplier(
+            @Header("Authorization") String auth,
             @Field(Constant.SP_STAFF_ID) String staffId,
             @Field(Constant.SUPPLIERS_NAME) String name,
             @Field(Constant.SUPPLIERS_CONTACT_PERSON) String contactPerson,
@@ -199,6 +246,7 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("suppliers/update_item")
     Call<Suppliers> updateSupplier(
+            @Header("Authorization") String auth,
             @Field(Constant.SUPPLIERS_ID) String suppliersId,
             @Field(Constant.SUPPLIERS_NAME) String name,
             @Field(Constant.SUPPLIERS_CONTACT_PERSON) String contactPerson,
@@ -211,6 +259,7 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("customers/update_item")
     Call<Customer> updateCustomer(
+            @Header("Authorization") String auth,
             @Field(Constant.CUSTOMER_ID) String id,
             @Field(Constant.CUSTOMER_NAME) String name,
             @Field(Constant.CUSTOMER_CELL) String cell,
@@ -222,6 +271,7 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("customers/delete_item")
     Call<Customer> deleteCustomer(
+            @Header("Authorization") String auth,
             @Field(Constant.CUSTOMER_ID) String customerId
     );
 
@@ -230,6 +280,7 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("orders/delete_item")
     Call<OrderList> deleteOrder(
+            @Header("Authorization") String auth,
             @Field(Constant.SP_STAFF_ID) String staffId,
             @Field(Constant.INVOICE_ID) String invoiceId
     );
@@ -239,6 +290,7 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("products/delete_item")
     Call<Product> deleteProduct(
+            @Header("Authorization") String auth,
             @Field(Constant.SP_STAFF_ID) String staffId,
             @Field(Constant.PRODUCT_ID) String productId
     );
@@ -248,6 +300,7 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("expenses/delete_item")
     Call<Expense> deleteExpense(
+            @Header("Authorization") String auth,
             @Field(Constant.EXPENSE_ID) String expenseId
     );
 
@@ -256,64 +309,92 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("suppliers/delete_item")
     Call<Suppliers> deleteSupplier(
+            @Header("Authorization") String auth,
             @Field(Constant.SUPPLIERS_ID) String suppliersId
     );
 
 
     //get suppliers data
+    
     @GET("suppliers/list")
     Call<List<Suppliers>> getSuppliers(
+            @Header("Authorization") String auth,
             @Query(Constant.SP_STAFF_ID) String staffId,
             @Query(Constant.SEARCH_TEXT) String searchText
     );
 
 
     //get weight unit
+    
     @GET("weight_units")
     Call<List<WeightUnit>> getWeightUnits(
+            @Header("Authorization") String auth,
             @Query(Constant.SEARCH_TEXT) String searchText
     );
 
 
     //for upload image and info
     @Multipart
+    
     @POST("products/add_item")
-    Call<Product> addProduct(@Part MultipartBody.Part file,
-                             @Part(Constant.SP_STAFF_ID) String staffId,
-                             @Part(Constant.KEY_FILE) RequestBody name,
-                             @Part(Constant.PRODUCT_NAME) RequestBody productName,
-                             @Part(Constant.PRODUCT_CODE) RequestBody productCode,
-                             @Part(Constant.CATEGORY_ID) RequestBody categoryId,
-                             @Part(Constant.PRODUCT_DESCRIPTION) RequestBody description,
-                             @Part(Constant.PRODUCT_SELL_PRICE) RequestBody sellPrice,
-                             @Part(Constant.PRODUCT_WEIGHT) RequestBody weight,
-                             @Part(Constant.PRODUCT_WEIGHT_UNIT_ID) RequestBody weightUnitId,
-                             @Part(Constant.SUPPLIERS_ID) RequestBody supplierId,
-                             @Part(Constant.PRODUCT_STOCK) RequestBody stock);
+    Call<Product> addProduct(
+            @Header("Authorization") String auth,
+            @Part MultipartBody.Part file,
+            @Part(Constant.SP_STAFF_ID) String staffId,
+            @Part(Constant.KEY_FILE) RequestBody name,
+            @Part(Constant.PRODUCT_NAME) RequestBody productName,
+            @Part(Constant.PRODUCT_CODE) RequestBody productCode,
+            @Part(Constant.CATEGORY_ID) RequestBody categoryId,
+            @Part(Constant.PRODUCT_DESCRIPTION) RequestBody description,
+            @Part(Constant.PRODUCT_SELL_PRICE) RequestBody sellPrice,
+            @Part(Constant.PRODUCT_WEIGHT) RequestBody weight,
+            @Part(Constant.PRODUCT_WEIGHT_UNIT_ID) RequestBody weightUnitId,
+            @Part(Constant.SUPPLIERS_ID) RequestBody supplierId,
+            @Part(Constant.PRODUCT_STOCK) RequestBody stock);
+
+    //for upload image and info
+    @FormUrlEncoded
+    @POST("products/add_item_without_file")
+    Call<Product> addProduct_without_file(
+            @Header("Authorization") String auth,
+            @Field(Constant.SP_STAFF_ID) String staffId,
+            @Field(Constant.PRODUCT_NAME) String productName,
+            @Field(Constant.PRODUCT_CODE) String productCode,
+            @Field(Constant.CATEGORY_ID) String categoryId,
+            @Field(Constant.PRODUCT_DESCRIPTION) String description,
+            @Field(Constant.PRODUCT_SELL_PRICE) String sellPrice,
+            @Field(Constant.PRODUCT_WEIGHT) String weight,
+            @Field(Constant.PRODUCT_WEIGHT_UNIT_ID) String weightUnitId,
+            @Field(Constant.SUPPLIERS_ID) String supplierId,
+            @Field(Constant.PRODUCT_STOCK) String stock);
 
 
     //for upload image and info
     @Multipart
+    
     @POST("products/update_item")
-    Call<Product> updateProduct(@Part MultipartBody.Part file,
-                                @Part(Constant.KEY_FILE) RequestBody name,
-                                @Part(Constant.PRODUCT_NAME) RequestBody productName,
-                                @Part(Constant.PRODUCT_CODE) RequestBody productCode,
-                                @Part(Constant.CATEGORY_ID) RequestBody categoryId,
-                                @Part(Constant.PRODUCT_DESCRIPTION) RequestBody description,
-                                @Part(Constant.PRODUCT_SELL_PRICE) RequestBody sellPrice,
-                                @Part(Constant.PRODUCT_WEIGHT) RequestBody weight,
-                                @Part(Constant.PRODUCT_WEIGHT_UNIT_ID) RequestBody weightUnitId,
-                                @Part(Constant.SUPPLIERS_ID) RequestBody supplierId,
-                                @Part(Constant.PRODUCT_STOCK) RequestBody stock,
-                                @Part(Constant.PRODUCT_ID) RequestBody product_id);
+    Call<Product> updateProduct(
+            @Header("Authorization") String auth,
+            @Part MultipartBody.Part file,
+            @Part(Constant.KEY_FILE) RequestBody name,
+            @Part(Constant.PRODUCT_NAME) RequestBody productName,
+            @Part(Constant.PRODUCT_CODE) RequestBody productCode,
+            @Part(Constant.CATEGORY_ID) RequestBody categoryId,
+            @Part(Constant.PRODUCT_DESCRIPTION) RequestBody description,
+            @Part(Constant.PRODUCT_SELL_PRICE) RequestBody sellPrice,
+            @Part(Constant.PRODUCT_WEIGHT) RequestBody weight,
+            @Part(Constant.PRODUCT_WEIGHT_UNIT_ID) RequestBody weightUnitId,
+            @Part(Constant.SUPPLIERS_ID) RequestBody supplierId,
+            @Part(Constant.PRODUCT_STOCK) RequestBody stock,
+            @Part(Constant.PRODUCT_ID) RequestBody product_id);
 
 
     //for upload image and info
     @Multipart
+    
     @POST("products/update_product_without_image")
     Call<Product> updateProductWithoutImage(
-
+            @Header("Authorization") String auth,
             @Part(Constant.PRODUCT_NAME) RequestBody productName,
             @Part(Constant.PRODUCT_CODE) RequestBody productCode,
             @Part(Constant.CATEGORY_ID) RequestBody categoryId,
@@ -327,8 +408,10 @@ public interface ApiInterface {
 
 
     //get expense data
+    
     @GET("expenses/list")
     Call<List<Expense>> getExpense(
+            @Header("Authorization") String auth,
             @Query(Constant.SP_STAFF_ID) String staffId,
             @Query(Constant.SEARCH_TEXT) String searchText
 
@@ -337,8 +420,10 @@ public interface ApiInterface {
 
 
     //get expense data
+    
     @GET("reports/expense_list")
     Call<List<Expense>> getAllExpense(
+            @Header("Authorization") String auth,
             @Query(Constant.SP_STAFF_ID) String staffId,
             @Query(Constant.KEY_TYPE) String type
     );
