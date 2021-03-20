@@ -1,2 +1,2 @@
 include ':app'
-rootProject.name='Online Smart POS'
+rootProject.name='Online ShoppersBill'
