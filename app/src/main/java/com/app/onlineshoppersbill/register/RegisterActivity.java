@@ -26,14 +26,11 @@ import androidx.annotation.NonNull;
 
 import com.app.onlineshoppersbill.Constant;
 import com.app.onlineshoppersbill.R;
-import com.app.onlineshoppersbill.model.Category;
-import com.app.onlineshoppersbill.model.Product;
-import com.app.onlineshoppersbill.model.Suppliers;
-import com.app.onlineshoppersbill.model.WeightUnit;
+import com.app.onlineshoppersbill.model.RegisterBaseInfo;
+import com.app.onlineshoppersbill.model.RegisterInfo;
 import com.app.onlineshoppersbill.networking.ApiClient;
 import com.app.onlineshoppersbill.networking.ApiInterface;
 import com.app.onlineshoppersbill.product.ProductActivity;
-import com.app.onlineshoppersbill.product.ScannerViewActivity;
 import com.app.onlineshoppersbill.utils.BaseActivity;
 
 import java.io.File;
@@ -51,86 +48,43 @@ import retrofit2.Response;
 
 public class RegisterActivity extends BaseActivity {
 
-
     ProgressDialog loading;
     SharedPreferences sp;
 
-    public static EditText etxtProductCode;
-    EditText etxtProductName,etxtProductStock, etxtProductCategory, etxtProductDescription, etxtProductSellPrice, etxtProductSupplier, etxtProdcutWeightUnit, etxtProductWeight;
-    TextView txtAddProdcut, txtChooseImage;
-    ImageView imgProduct, imgScanCode;
-    String mediaPath, encodedImage = "N/A";
-    List<Category> productCategory;
-    List<Suppliers> productSuppliers;
-    List<WeightUnit> weightUnits;
-    ArrayAdapter<String> categoryAdapter, supplierAdapter, weightUnitAdapter;
-    List<String> categoryNames, supplierNames, weightUnitNames;
-
-    String selectedCategoryID, selectedSupplierID, selectedWeightUnitID;
-
+    EditText etxtBusinessName, etxtEmail, etxtCountry, etxtCurrency, etxtTimeZone, etxtFirstName, etxtUserName, etxtPassword;
+    TextView txtRegisterUser;
+    ArrayAdapter<String> currencyAdapter, timezoneAdapter;
+    RegisterBaseInfo baseInfo;
+    String selectedCurrency, selectedTimezone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_product);
-
+        setContentView(R.layout.activity_register);
 
         getSupportActionBar().setHomeButtonEnabled(true); //for back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);//for back button
-        getSupportActionBar().setTitle(R.string.add_product);
+        getSupportActionBar().setTitle(R.string.register);
         sp = getSharedPreferences(Constant.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
-        etxtProductName = findViewById(R.id.etxt_product_name);
-        etxtProductCode = findViewById(R.id.etxt_product_code);
-        etxtProductCategory = findViewById(R.id.etxt_product_category);
-        etxtProductDescription = findViewById(R.id.etxt_product_description);
-        etxtProductSellPrice = findViewById(R.id.etxt_product_sell_price);
-        etxtProductSupplier = findViewById(R.id.etxt_supplier);
-        etxtProdcutWeightUnit = findViewById(R.id.etxt_product_weight_unit);
-        etxtProductWeight = findViewById(R.id.etxt_product_weight);
-        etxtProductStock = findViewById(R.id.etxt_product_stock);
+        etxtBusinessName = findViewById(R.id.etxt_business_name);
+        etxtEmail = findViewById(R.id.etxt_register_email);
+        etxtCountry = findViewById(R.id.etxt_country);
+        etxtCurrency = findViewById(R.id.etxt_currency);
+        etxtTimeZone = findViewById(R.id.etxt_time_zone);
+        etxtFirstName = findViewById(R.id.etxt_first_name);
+        etxtUserName = findViewById(R.id.etxt_user_name);
+        etxtPassword = findViewById(R.id.etxt_register_password);
 
-        txtAddProdcut = findViewById(R.id.txt_add_product);
-        imgProduct = findViewById(R.id.image_product);
-        imgScanCode = findViewById(R.id.img_scan_code);
-        txtChooseImage = findViewById(R.id.txt_choose_image);
+        txtRegisterUser = findViewById(R.id.txt_register_user);
 
+        getRegisterBaseInfo();
 
-        getProductCategory();
-        getProductSuppliers();
-        getWeightUnits();
-
-        imgScanCode.setOnClickListener(v -> {
-            Intent intent = new Intent(RegisterActivity.this, ScannerViewActivity.class);
-            startActivity(intent);
-        });
-
-
-        txtChooseImage.setOnClickListener(v -> {
-
-            Intent intent = new Intent(RegisterActivity.this, ImageSelectActivity.class);
-            intent.putExtra(ImageSelectActivity.FLAG_COMPRESS, true);//default is true
-            intent.putExtra(ImageSelectActivity.FLAG_CAMERA, true);//default is true
-            intent.putExtra(ImageSelectActivity.FLAG_GALLERY, true);//default is true
-            startActivityForResult(intent, 1213);
-        });
-
-        imgProduct.setOnClickListener(v -> {
-
-            Intent intent = new Intent(RegisterActivity.this, ImageSelectActivity.class);
-            intent.putExtra(ImageSelectActivity.FLAG_COMPRESS, true);//default is true
-            intent.putExtra(ImageSelectActivity.FLAG_CAMERA, true);//default is true
-            intent.putExtra(ImageSelectActivity.FLAG_GALLERY, true);//default is true
-            startActivityForResult(intent, 1213);
-        });
-
-
-
-        etxtProductCategory.setOnClickListener(new View.OnClickListener() {
+        etxtCurrency.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                categoryAdapter = new ArrayAdapter<>(RegisterActivity.this, android.R.layout.simple_list_item_1);
-                categoryAdapter.addAll(categoryNames);
+                currencyAdapter = new ArrayAdapter<>(RegisterActivity.this, android.R.layout.simple_list_item_1);
+                currencyAdapter.addAll(baseInfo.getCurrencyList());
 
                 AlertDialog.Builder dialog = new AlertDialog.Builder(RegisterActivity.this);
                 View dialogView = getLayoutInflater().inflate(R.layout.dialog_list_search, null);
@@ -143,9 +97,9 @@ public class RegisterActivity extends BaseActivity {
                 ListView dialogList = dialogView.findViewById(R.id.dialog_list);
 
 
-                dialogTitle.setText(R.string.product_category);
+                dialogTitle.setText(R.string.currency);
                 dialogList.setVerticalScrollBarEnabled(true);
-                dialogList.setAdapter(categoryAdapter);
+                dialogList.setAdapter(currencyAdapter);
 
                 dialogInput.addTextChangedListener(new TextWatcher() {
                     @Override
@@ -156,7 +110,7 @@ public class RegisterActivity extends BaseActivity {
 
                     @Override
                     public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-                        categoryAdapter.getFilter().filter(charSequence);
+                        currencyAdapter.getFilter().filter(charSequence);
                     }
 
                     @Override
@@ -183,20 +137,15 @@ public class RegisterActivity extends BaseActivity {
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                         alertDialog.dismiss();
-                        final String selectedItem = categoryAdapter.getItem(position);
+                        final String selectedItem = currencyAdapter.getItem(position);
 
-                        String categoryId = "0";
-                        etxtProductCategory.setText(selectedItem);
-
-
-                        for (int i = 0; i < categoryNames.size(); i++) {
-                            if (categoryNames.get(i).equalsIgnoreCase(selectedItem)) {
+                        etxtCurrency.setText(selectedItem);
+                        for (int i = 0; i < baseInfo.getCurrencyList().size(); i++) {
+                            if (baseInfo.getCurrencyList().get(i).equalsIgnoreCase(selectedItem)) {
                                 // Get the ID of selected Country
-                                categoryId = productCategory.get(i).getProductCategoryId();
+                                selectedCurrency = baseInfo.getCurrencyList().get(i);
                             }
                         }
-
-                        selectedCategoryID = categoryId;
 
                     }
                 });
@@ -204,11 +153,11 @@ public class RegisterActivity extends BaseActivity {
         });
 
 
-        etxtProductSupplier.setOnClickListener(new View.OnClickListener() {
+        etxtTimeZone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                supplierAdapter = new ArrayAdapter<>(RegisterActivity.this, android.R.layout.simple_list_item_1);
-                supplierAdapter.addAll(supplierNames);
+                timezoneAdapter = new ArrayAdapter<>(RegisterActivity.this, android.R.layout.simple_list_item_1);
+                timezoneAdapter.addAll(baseInfo.getTimezoneList());
 
                 AlertDialog.Builder dialog = new AlertDialog.Builder(RegisterActivity.this);
                 View dialogView = getLayoutInflater().inflate(R.layout.dialog_list_search, null);
@@ -219,9 +168,9 @@ public class RegisterActivity extends BaseActivity {
                 EditText dialogInput = (EditText) dialogView.findViewById(R.id.dialog_input);
                 TextView dialogTitle = (TextView) dialogView.findViewById(R.id.dialog_title);
                 ListView dialogList = (ListView) dialogView.findViewById(R.id.dialog_list);
-                dialogTitle.setText(R.string.suppliers);
+                dialogTitle.setText(R.string.time_zone);
                 dialogList.setVerticalScrollBarEnabled(true);
-                dialogList.setAdapter(supplierAdapter);
+                dialogList.setAdapter(timezoneAdapter);
 
                 dialogInput.addTextChangedListener(new TextWatcher() {
                     @Override
@@ -232,7 +181,7 @@ public class RegisterActivity extends BaseActivity {
 
                     @Override
                     public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-                        supplierAdapter.getFilter().filter(charSequence);
+                        timezoneAdapter.getFilter().filter(charSequence);
                     }
 
                     @Override
@@ -259,185 +208,62 @@ public class RegisterActivity extends BaseActivity {
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                         alertDialog.dismiss();
-                        final String selectedItem = supplierAdapter.getItem(position);
+                        final String selectedItem = timezoneAdapter.getItem(position);
 
-                        String supplierId = "0";
-                        etxtProductSupplier.setText(selectedItem);
+                        etxtTimeZone.setText(selectedItem);
 
 
-                        for (int i = 0; i < supplierNames.size(); i++) {
-                            if (supplierNames.get(i).equalsIgnoreCase(selectedItem)) {
+                        for (int i = 0; i < baseInfo.getTimezoneList().size(); i++) {
+                            if (baseInfo.getTimezoneList().get(i).equalsIgnoreCase(selectedItem)) {
                                 // Get the ID of selected Country
-                                supplierId = productSuppliers.get(i).getSuppliersId();
+                                selectedTimezone = baseInfo.getTimezoneList().get(i);
                             }
                         }
-
-
-                        selectedSupplierID = supplierId;
-
                     }
                 });
             }
         });
 
-
-        etxtProdcutWeightUnit.setOnClickListener(new View.OnClickListener() {
+        txtRegisterUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                weightUnitAdapter = new ArrayAdapter<>(RegisterActivity.this, android.R.layout.simple_list_item_1);
-                weightUnitAdapter.addAll(weightUnitNames);
+                String businessName = etxtBusinessName.getText().toString();
+                String email = etxtEmail.getText().toString();
+                String country = etxtCountry.getText().toString();
+                String currency = selectedCurrency;
+                String timezone = selectedTimezone;
+                String firstName = etxtFirstName.getText().toString();
+                String userName = etxtUserName.getText().toString();
+                String password = etxtPassword.getText().toString();
 
-                AlertDialog.Builder dialog = new AlertDialog.Builder(RegisterActivity.this);
-                View dialogView = getLayoutInflater().inflate(R.layout.dialog_list_search, null);
-                dialog.setView(dialogView);
-                dialog.setCancelable(false);
-
-                Button dialogButton = (Button) dialogView.findViewById(R.id.dialog_button);
-                EditText dialogInput = (EditText) dialogView.findViewById(R.id.dialog_input);
-                TextView dialogTitle = (TextView) dialogView.findViewById(R.id.dialog_title);
-                ListView dialogList = (ListView) dialogView.findViewById(R.id.dialog_list);
-
-
-                dialogTitle.setText(R.string.product_weight_unit);
-                dialogList.setVerticalScrollBarEnabled(true);
-                dialogList.setAdapter(weightUnitAdapter);
-
-                dialogInput.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                        Log.d("data", s.toString());
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-                        weightUnitAdapter.getFilter().filter(charSequence);
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s) {
-                        Log.d("data", s.toString());
-                    }
-                });
-
-
-                final AlertDialog alertDialog = dialog.create();
-
-                dialogButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        alertDialog.dismiss();
-                    }
-                });
-
-                alertDialog.show();
-
-
-                dialogList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                        alertDialog.dismiss();
-                        final String selectedItem = weightUnitAdapter.getItem(position);
-
-                        String weightUnitId = "0";
-                        etxtProdcutWeightUnit.setText(selectedItem);
-
-
-                        for (int i = 0; i < weightUnitNames.size(); i++) {
-                            if (weightUnitNames.get(i).equalsIgnoreCase(selectedItem)) {
-                                // Get the ID of selected Country
-                                weightUnitId = weightUnits.get(i).getWeightUnitId();
-                            }
-                        }
-                        selectedWeightUnitID = weightUnitId;
-                    }
-                });
-            }
-        });
-
-
-        txtAddProdcut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                String productName = etxtProductName.getText().toString();
-                String productCode = etxtProductCode.getText().toString();
-                String productCategoryName = etxtProductCategory.getText().toString();
-                String productCategoryId = selectedCategoryID;
-                String productDescription = etxtProductDescription.getText().toString();
-
-                String productStock = etxtProductStock.getText().toString();
-
-                String productSellPrice = etxtProductSellPrice.getText().toString();
-
-                String productSupplierName = etxtProductSupplier.getText().toString();
-                String productSupplierId = selectedSupplierID;
-                String productWeightUnitName = etxtProdcutWeightUnit.getText().toString();
-                String productWeightUnitId = selectedWeightUnitID;
-                String productWeight = etxtProductWeight.getText().toString();
-
-
-                if (productName.isEmpty()) {
-                    etxtProductName.setError(getString(R.string.product_name_cannot_be_empty));
-                    etxtProductName.requestFocus();
-                } else if (productCode.isEmpty()) {
-                    etxtProductCode.setError(getString(R.string.product_code_cannot_be_empty));
-                    etxtProductCode.requestFocus();
-                } else if (productCategoryName.isEmpty() || productCategoryId.isEmpty()) {
-                    etxtProductCategory.setError(getString(R.string.product_category_cannot_be_empty));
-                    etxtProductCategory.requestFocus();
-                } else if (productSellPrice.isEmpty()) {
-                    etxtProductSellPrice.setError(getString(R.string.product_sell_price_cannot_be_empty));
-                    etxtProductSellPrice.requestFocus();
-                } else if (productWeightUnitName.isEmpty() || productWeight.isEmpty()) {
-                    etxtProductWeight.setError(getString(R.string.product_weight_cannot_be_empty));
-                    etxtProductWeight.requestFocus();
-                } else if (productSupplierName.isEmpty() || productSupplierId.isEmpty()) {
-                    etxtProductSupplier.setError(getString(R.string.product_supplier_cannot_be_empty));
-                    etxtProductSupplier.requestFocus();
+                if (businessName.isEmpty()) {
+                    etxtBusinessName.setError(getString(R.string.business_name_cannot_be_empty));
+                    etxtBusinessName.requestFocus();
+                } else if (country.isEmpty()) {
+                    etxtCountry.setError(getString(R.string.country_cannot_be_empty));
+                    etxtCountry.requestFocus();
+                } else if (currency.isEmpty()) {
+                    etxtCurrency.setError(getString(R.string.currency_cannot_be_empty));
+                    etxtCurrency.requestFocus();
+                } else if (timezone.isEmpty()) {
+                    etxtTimeZone.setError(getString(R.string.timezone_cannot_be_empty));
+                    etxtTimeZone.requestFocus();
+                } else if (firstName.isEmpty()) {
+                    etxtFirstName.setError(getString(R.string.first_name_cannot_be_empty));
+                    etxtFirstName.requestFocus();
+                } else if (userName.isEmpty()) {
+                    etxtUserName.setError(getString(R.string.user_name_cannot_be_empty));
+                    etxtUserName.requestFocus();
+                } else if (password.isEmpty()) {
+                    etxtPassword.setError(getString(R.string.password_cannot_be_empty));
+                    etxtPassword.requestFocus();
                 } else {
-
-                    addProduct(productName, productCode, productCategoryId, productDescription, productSellPrice,  productWeight,productWeightUnitId,productSupplierId,productStock);
-
-
-
-
+                    registerUser(businessName, email, country, currency, timezone, firstName, userName, password);
                 }
-
             }
         });
 
     }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        try {
-
-            // When an Image is picked
-            if (requestCode == 1213 && resultCode == RESULT_OK && null != data) {
-
-
-                mediaPath = data.getStringExtra(ImageSelectActivity.RESULT_FILE_PATH);
-                Bitmap selectedImage = BitmapFactory.decodeFile(mediaPath);
-                imgProduct.setImageBitmap(selectedImage);
-
-
-            }
-
-
-        } catch (Exception e) {
-            Toast.makeText(this, R.string.something_went_wrong, Toast.LENGTH_LONG).show();
-        }
-
-    }
-
-
-
-
-
 
     //for back button
     @Override
@@ -449,14 +275,14 @@ public class RegisterActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-
-
-
-
-
-    // Uploading Image/Video
-    private void  addProduct(String productName,String productCode,String productCategoryId,String productDescription, String productSellPrice, String productWeight,String productWeightUnitId,String productSupplierId,String productStock) {
+    private void  registerUser(String businessName,
+                               String email,
+                               String country,
+                               String currency,
+                               String timezone,
+                               String firstName,
+                               String userName,
+                               String password) {
 
         loading=new ProgressDialog(this);
         loading.setCancelable(false);
@@ -464,50 +290,21 @@ public class RegisterActivity extends BaseActivity {
         loading.show();
 
         ApiInterface getResponse = ApiClient.getApiClient().create(ApiInterface.class);
-        String staffId = sp.getString(Constant.SP_STAFF_ID, "");
-        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
-        Call<Product> call;
+        Call<RegisterInfo> call;
 
-        // Map is used to multipart the file using okhttp3.RequestBody
-        if(mediaPath != null) {
-            File file = new File(mediaPath);
-            // Parsing any Media type file
-            RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
+        call = getResponse.registerUser(businessName, email, country, currency, timezone, firstName, userName, password);
 
-            MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", file.getName(), requestBody);
-
-            RequestBody filename = RequestBody.create(MediaType.parse("text/plain"), file.getName());
-            RequestBody name = RequestBody.create(MediaType.parse("text/plain"), productName);
-            RequestBody code = RequestBody.create(MediaType.parse("text/plain"), productCode);
-            RequestBody category = RequestBody.create(MediaType.parse("text/plain"), productCategoryId);
-            RequestBody description = RequestBody.create(MediaType.parse("text/plain"), productDescription);
-            RequestBody sellPrice = RequestBody.create(MediaType.parse("text/plain"), productSellPrice);
-            RequestBody weight = RequestBody.create(MediaType.parse("text/plain"), productWeight);
-            RequestBody weightUnitId = RequestBody.create(MediaType.parse("text/plain"), productWeightUnitId);
-            RequestBody supplierId = RequestBody.create(MediaType.parse("text/plain"), productSupplierId);
-            RequestBody stock = RequestBody.create(MediaType.parse("text/plain"),productStock);
-            call = getResponse.addProduct(auth_token, fileToUpload, staffId, filename,name,code,category,description,sellPrice,weight,weightUnitId,supplierId,stock);
-        }
-        else
-        {
-            call = getResponse.addProduct_without_file(auth_token, staffId, productName, productCode, productCategoryId, productDescription, productSellPrice, productWeight, productWeightUnitId, productSupplierId, productStock);
-        }
-
-
-
-        call.enqueue(new Callback<Product>() {
+        call.enqueue(new Callback<RegisterInfo>() {
             @Override
-            public void onResponse(@NonNull Call<Product> call, @NonNull Response<Product> response) {
+            public void onResponse(@NonNull Call<RegisterInfo> call, @NonNull Response<RegisterInfo> response) {
 
                 if (response.isSuccessful() && response.body() != null) {
 
                     loading.dismiss();
                     String value = response.body().getValue();
                     if (value.equals(Constant.KEY_SUCCESS)) {
-                        Toasty.success(getApplicationContext(), R.string.product_successfully_added, Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(RegisterActivity.this, ProductActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
+                        Toasty.success(getApplicationContext(), R.string.user_successfully_registered, Toast.LENGTH_SHORT).show();
+                        RegisterActivity.this.finish();
                     }
 
                     else if (value.equals(Constant.KEY_FAILURE)) {
@@ -535,7 +332,7 @@ public class RegisterActivity extends BaseActivity {
 
 
             @Override
-            public void onFailure(@NonNull Call<Product> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<RegisterInfo> call, @NonNull Throwable t) {
                 loading.dismiss();
                 Log.d("Error! ", t.toString());
                 Toasty.error(RegisterActivity.this, R.string.no_network_connection, Toast.LENGTH_SHORT).show();
@@ -543,139 +340,33 @@ public class RegisterActivity extends BaseActivity {
         });
     }
 
-
-
-
-
-    public void getProductCategory() {
+    public void getRegisterBaseInfo() {
 
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
 
-        Call<List<Category>> call;
+        Call<RegisterBaseInfo> call;
 
-        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
-        call = apiInterface.getCategory(auth_token);
+        call = apiInterface.getRegisterBaseInfo();
 
-        call.enqueue(new Callback<List<Category>>() {
+        call.enqueue(new Callback<RegisterBaseInfo>() {
             @Override
-            public void onResponse(@NonNull Call<List<Category>> call, @NonNull Response<List<Category>> response) {
+            public void onResponse(@NonNull Call<RegisterBaseInfo> call, @NonNull Response<RegisterBaseInfo> response) {
 
 
                 if (response.isSuccessful() && response.body() != null) {
 
-                    productCategory = response.body();
-
-                    categoryNames = new ArrayList<>();
-
-                    for (int i = 0; i < productCategory.size(); i++) {
-
-                        categoryNames.add(productCategory.get(i).getProductCategoryName());
-
-                    }
-
+                    baseInfo = response.body();
                 }
 
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<Category>> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<RegisterBaseInfo> call, @NonNull Throwable t) {
 
                 //write own action
             }
         });
-
-
     }
-
-
-
-    public void getProductSuppliers() {
-
-        ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-
-        Call<List<Suppliers>> call;
-
-        String staffId = sp.getString(Constant.SP_STAFF_ID, "");
-        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
-        call = apiInterface.getSuppliers(auth_token, staffId, "");
-
-        call.enqueue(new Callback<List<Suppliers>>() {
-            @Override
-            public void onResponse(@NonNull Call<List<Suppliers>> call, @NonNull Response<List<Suppliers>> response) {
-
-
-                if (response.isSuccessful() && response.body() != null) {
-
-                    productSuppliers = response.body();
-
-                    supplierNames = new ArrayList<>();
-
-                    for (int i = 0; i < productSuppliers.size(); i++) {
-
-                        supplierNames.add(productSuppliers.get(i).getSuppliersName());
-
-                    }
-                }
-
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<List<Suppliers>> call, @NonNull Throwable t) {
-
-                //write own action
-            }
-        });
-
-
-    }
-
-
-
-    public void getWeightUnits() {
-
-        ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-
-        Call<List<WeightUnit>> call;
-
-        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
-        call = apiInterface.getWeightUnits(auth_token, "");
-
-        call.enqueue(new Callback<List<WeightUnit>>() {
-            @Override
-            public void onResponse(@NonNull Call<List<WeightUnit>> call, @NonNull Response<List<WeightUnit>> response) {
-
-
-                if (response.isSuccessful() && response.body() != null) {
-
-                    weightUnits = response.body();
-
-                    weightUnitNames = new ArrayList<>();
-
-                    for (int i = 0; i < weightUnits.size(); i++) {
-
-                        weightUnitNames.add(weightUnits.get(i).getWeightUnitName());
-
-                    }
-
-
-
-                }
-
-
-
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<List<WeightUnit>> call, @NonNull Throwable t) {
-
-                //write own action
-            }
-        });
-
-
-    }
-
-
 }
 
 

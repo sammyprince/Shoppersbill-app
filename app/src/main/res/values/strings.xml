@@ -47,7 +47,18 @@
     <string name="product_supplier_cannot_be_empty">Product supplier can\'t be empty!</string>
     <string name="product_weight_cannot_be_empty">Product weight can\'t be empty!</string>
     <string name="product_successfully_added">Product Successfully Added</string>
+    <string name="user_successfully_registered">User Successfully Registered</string>
     <string name="something_went_wrong">Something went wrong</string>
+
+    <string name="business_name_cannot_be_empty">Business name can\'t be empty!</string>
+    <string name="country_cannot_be_empty">Country can\'t be empty!</string>
+    <string name="currency_cannot_be_empty">Currency can\'t be empty!</string>
+    <string name="timezone_cannot_be_empty">Timezone can\'t be empty!</string>
+    <string name="first_name_cannot_be_empty">First name can\'t be empty!</string>
+    <string name="user_name_cannot_be_empty">User name can\'t be empty!</string>
+    <string name="password_cannot_be_empty">Password can\'t be empty!</string>
+
+
     <string name="subscribe_succeed">Subscribe Succeed!</string>
     <string name="subscribe_failed">Subscribe Failed!</string>
 
@@ -224,5 +235,11 @@
     <string name="shop_closed_now">Shop Closed Now!</string>
     <string name="reset">RESET</string>
     <string name="subscribe">Subscribe</string>
+    <string name="business_name">Business Name</string>
+    <string name="currency">Currency</string>
+    <string name="time_zone">Time Zone</string>
+    <string name="country">Country</string>
+    <string name="first_name">First Name</string>
+    <string name="user_name">User Name</string>
 
 </resources>

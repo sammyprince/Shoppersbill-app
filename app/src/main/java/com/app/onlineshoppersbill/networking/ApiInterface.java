@@ -12,6 +12,8 @@ import com.app.onlineshoppersbill.model.MonthData;
 import com.app.onlineshoppersbill.model.OrderDetails;
 import com.app.onlineshoppersbill.model.OrderList;
 import com.app.onlineshoppersbill.model.Product;
+import com.app.onlineshoppersbill.model.RegisterBaseInfo;
+import com.app.onlineshoppersbill.model.RegisterInfo;
 import com.app.onlineshoppersbill.model.SalesReport;
 import com.app.onlineshoppersbill.model.ShopInformation;
 import com.app.onlineshoppersbill.model.Suppliers;
@@ -43,6 +45,24 @@ public interface ApiInterface {
     Call<Login> login(
             @Field(Constant.KEY_EMAIL) String email,
             @Field(Constant.KEY_PASSWORD) String password);
+
+
+    //for register
+    @GET("register_base_info")
+    Call<RegisterBaseInfo> getRegisterBaseInfo();
+
+    @FormUrlEncoded
+    @POST("register")
+    Call<RegisterInfo> registerUser(
+            @Field("name") String businessName,
+            @Field("email") String email,
+            @Field("country") String country,
+            @Field("currency") String currency,
+            @Field("time_zone") String timezone,
+            @Field("first_name") String firstName,
+            @Field("username") String userName,
+            @Field("password") String password
+    );
 
     //calling json array , need list
     @FormUrlEncoded

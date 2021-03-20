@@ -17,6 +17,7 @@ import com.app.onlineshoppersbill.R;
 import com.app.onlineshoppersbill.model.Login;
 import com.app.onlineshoppersbill.networking.ApiClient;
 import com.app.onlineshoppersbill.networking.ApiInterface;
+import com.app.onlineshoppersbill.register.RegisterActivity;
 import com.app.onlineshoppersbill.utils.BaseActivity;
 import com.app.onlineshoppersbill.utils.Utils;
 
@@ -29,6 +30,7 @@ public class LoginActivity extends BaseActivity {
 
     EditText etxtEmail, etxtPassword;
     TextView txtLogin;
+    TextView txtRegister;
     SharedPreferences sp;
     ProgressDialog loading;
     Utils utils;
@@ -44,6 +46,7 @@ public class LoginActivity extends BaseActivity {
         etxtEmail = findViewById(R.id.etxt_email);
         etxtPassword = findViewById(R.id.etxt_password);
         txtLogin = findViewById(R.id.txt_login);
+        txtRegister = findViewById(R.id.txt_register);
         utils = new Utils();
 
         sp = getSharedPreferences(Constant.SHARED_PREF_NAME, Context.MODE_PRIVATE);
@@ -83,6 +86,11 @@ public class LoginActivity extends BaseActivity {
                     Toasty.error(LoginActivity.this, R.string.no_network_connection, Toast.LENGTH_SHORT).show();
                 }
             }
+        });
+
+        txtRegister.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(intent);
         });
 
 
