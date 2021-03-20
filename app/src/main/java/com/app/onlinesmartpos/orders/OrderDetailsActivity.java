@@ -153,7 +153,7 @@ public class OrderDetailsActivity extends BaseActivity {
             public void onClick(View v) {
 
                 templatePDF.openDocument();
-                templatePDF.addMetaData(Constant.ORDER_RECEIPT, Constant.ORDER_RECEIPT, "Smart POS");
+                templatePDF.addMetaData(Constant.ORDER_RECEIPT, Constant.ORDER_RECEIPT, "ShoppersBill");
                 templatePDF.addTitle(shopName, shopAddress+ "\n Email: " + shopEmail + "\nContact: " + shopContact + "\nInvoice ID:" + invoiceId, orderDate + " " + orderTime+"\nServed By: "+userName);
                 templatePDF.addParagraph(shortText);
 

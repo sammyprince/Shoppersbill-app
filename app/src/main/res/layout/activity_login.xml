@@ -137,6 +137,25 @@
                             android:textSize="16dp"
                             android:textStyle="bold" />
 
+                        <TextView
+                            android:id="@+id/txt_register"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/rounded_button"
+                            android:fontFamily="casual"
+                            android:gravity="center"
+                            android:padding="10dp"
+                            android:text="@string/register"
+                            android:textColor="#fff"
+                            android:textColorHint="@color/colorPrimary"
+                            android:textSize="16dp"
+                            android:textStyle="bold" />
+
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -149,7 +168,7 @@
                 android:fontFamily="@font/sailec_medium"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="Developed By Online Soft Sell"
+                android:text="Developed By Online ShoppersBill"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="bold" />

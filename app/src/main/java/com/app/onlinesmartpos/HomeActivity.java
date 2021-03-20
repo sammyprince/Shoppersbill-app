@@ -155,12 +155,12 @@ public class HomeActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                if (userType.equals(Constant.ADMIN) || userType.equals(Constant.MANAGER)) {
+//                if (userType.equals(Constant.ADMIN) || userType.equals(Constant.MANAGER)) {
                     Intent intent = new Intent(HomeActivity.this, ReportActivity.class);
                     startActivity(intent);
-                } else {
-                    Toasty.error(HomeActivity.this, R.string.you_dont_have_permission_to_access_this_page, Toast.LENGTH_SHORT).show();
-                }
+//                } else {
+//                    Toasty.error(HomeActivity.this, R.string.you_dont_have_permission_to_access_this_page, Toast.LENGTH_SHORT).show();
+//                }
 
             }
         });
@@ -170,12 +170,12 @@ public class HomeActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                if (userType.equals(Constant.ADMIN) || userType.equals(Constant.MANAGER)) {
+//                if (userType.equals(Constant.ADMIN) || userType.equals(Constant.MANAGER)) {
                     Intent intent = new Intent(HomeActivity.this, ExpenseActivity.class);
                     startActivity(intent);
-                } else {
-                    Toasty.error(HomeActivity.this, R.string.you_dont_have_permission_to_access_this_page, Toast.LENGTH_SHORT).show();
-                }
+//                } else {
+//                    Toasty.error(HomeActivity.this, R.string.you_dont_have_permission_to_access_this_page, Toast.LENGTH_SHORT).show();
+//                }
             }
         });
 
@@ -184,12 +184,12 @@ public class HomeActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                if (userType.equals(Constant.ADMIN)) {
+//                if (userType.equals(Constant.ADMIN)) {
                     Intent intent = new Intent(HomeActivity.this, SettingsActivity.class);
                     startActivity(intent);
-                } else {
-                    Toasty.error(HomeActivity.this, R.string.you_dont_have_permission_to_access_this_page, Toast.LENGTH_SHORT).show();
-                }
+//                } else {
+//                    Toasty.error(HomeActivity.this, R.string.you_dont_have_permission_to_access_this_page, Toast.LENGTH_SHORT).show();
+//                }
             }
         });
 

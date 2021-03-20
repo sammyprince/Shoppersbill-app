@@ -31,7 +31,7 @@
                 android:gravity="center"
                 android:maxLines="2"
                 android:padding="5dp"
-                android:text="ONLINE POS"
+                android:text="ONLINE SHOPPERSBILL"
                 android:textAllCaps="true"
                 android:textColor="@color/colorPrimary"
                 android:textSize="20sp"
@@ -43,7 +43,7 @@
                 android:fontFamily="@font/sailec_regular"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="ONLINE POS is a Smart Solution for your any shop. Manage your daily sales smartly by using Online POS"
+                android:text="Shoppersbill is an Integrated Payment and Billing Platform, A Smart Solution for you and your Business, Manage your Daily, Weekly and Monthly smartly by using Shoppersbill"
                 android:textColor="@color/transparent_black" />
 
             <TextView
@@ -53,7 +53,7 @@
                 android:autoLink="web"
                 android:fontFamily="@font/sailec_regular"
                 android:gravity="center"
-                android:text="www.onlinesoftsell.com" />
+                android:text="http://www.shoppersbill.com" />
 
 
             <TextView
@@ -63,7 +63,17 @@
                 android:autoLink="email"
                 android:fontFamily="@font/sailec_regular"
                 android:gravity="center"
-                android:text="onlinesoftsell@gmail.com" />
+                android:text="info@shoppersbill.com, Support@shoppersbill.com" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:autoLink="email"
+                android:fontFamily="@font/sailec_regular"
+                android:gravity="center"
+                android:text="INTL - +1 410 514 3321 , NG - (+234) 08025473596" />
 
 
         </LinearLayout>

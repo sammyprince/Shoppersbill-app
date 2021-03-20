@@ -51,7 +51,6 @@
     <string name="subscribe_succeed">Subscribe Succeed!</string>
     <string name="subscribe_failed">Subscribe Failed!</string>
 
-
     <string name="add_product">Add Product</string>
     <string name="product_details">Product Details</string>
     <string name="product_code">Product Code</string>
@@ -185,6 +184,7 @@
     <string name="payment_methods">Payment Methods</string>
     <string name="password">Password</string>
     <string name="login">LOGIN</string>
+    <string name="register">REGISTER</string>
     <string name="please_enter_password">Please enter password</string>
     <string name="logout">Logout</string>
     <string name="you_dont_have_permission_to_access_this_page">You don\'t have permission to access this page</string>
@@ -223,7 +223,6 @@
     <string name="all">All</string>
     <string name="shop_closed_now">Shop Closed Now!</string>
     <string name="reset">RESET</string>
-    <string name="register">REGISTER</string>
     <string name="subscribe">Subscribe</string>
 
 </resources>
