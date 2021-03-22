@@ -66,16 +66,14 @@ public interface ApiInterface {
 
     //calling json array , need list
     @FormUrlEncoded
-    @POST("orders/update_item")
+    @POST("orders/add_item")
     Call<String> submitOrders(
             @Header("Authorization") String auth,
-            @Body RequestBody ordersData
+            @Field(Constant.SP_STAFF_ID) String staffId,
+            @Field("order_data") String ordersData
     );
 
-
-
     //get customers data
-    
     @GET("customers/list")
     Call<List<Customer>> getCustomers(
             @Query(Constant.SP_STAFF_ID) String staffId,

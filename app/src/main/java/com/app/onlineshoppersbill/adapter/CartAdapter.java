@@ -39,7 +39,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
     public static Double totalPrice;
     Button btnSubmitOrder;
     ImageView imgNoProduct;
-
+    double getStock;
     SharedPreferences sp;
     String currency;
 
@@ -87,13 +87,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
 
         String imageUrl= Constant.PRODUCT_IMAGE_URL+productImage;
 
-        int getStock=Integer.parseInt(productStock);
-
-
-
-
-
-
+        getStock = 0.0;
+        if(productStock != null)
+            getStock = Double.parseDouble(productStock);
 
         databaseAccess.open();
         totalPrice = databaseAccess.getTotalPrice();

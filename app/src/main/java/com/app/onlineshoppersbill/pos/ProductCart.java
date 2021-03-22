@@ -193,7 +193,7 @@ public class ProductCart extends BaseActivity {
                     obj.put("order_price", String.valueOf(orderPrice));
                     obj.put("tax", String.valueOf(tax));
                     obj.put("discount", discount);
-                    obj.put("served_by", servedBy);
+                    obj.put("customer_id", staffId);
 
                     JSONArray array = new JSONArray();
 
@@ -226,7 +226,6 @@ public class ProductCart extends BaseActivity {
 
                     }
                     obj.put("lines", array);
-
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -269,15 +268,14 @@ public class ProductCart extends BaseActivity {
         progressDialog.setMessage(getString(R.string.please_wait));
         progressDialog.show();
 
-        RequestBody body2 = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), String.valueOf(obj));
-
         String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
-        Call<String> call = apiInterface.submitOrders(auth_token, body2);
+        String staffId= sp.getString(Constant.SP_STAFF_ID, "");
+        Call<String> call = apiInterface.submitOrders(auth_token, staffId, obj.toString());
 
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
-
+                String result = response.body();
                 if (response.isSuccessful()) {
 
                     progressDialog.dismiss();
@@ -295,15 +293,12 @@ public class ProductCart extends BaseActivity {
                     Log.d("error", response.toString());
 
                 }
-
-
             }
 
             @Override
             public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
-
+                progressDialog.dismiss();
                 Log.d("onFailure", t.toString());
-
             }
         });
 

@@ -96,12 +96,11 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
             holder.txtOrderNote.setVisibility(View.GONE);
         } else {
             holder.txtOrderNote.setText(context.getString(R.string.table_number) + " :" + orderNote);
-            holder.imgOrderImage.setImageResource(R.drawable.table_booking);
+//            holder.imgOrderImage.setImageResource(R.drawable.table_booking);
         }
         holder.imgDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
 
                 NiftyDialogBuilder dialogBuilder = NiftyDialogBuilder.getInstance(context);
                 dialogBuilder
@@ -194,8 +193,6 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
         call.enqueue(new Callback<OrderList>() {
             @Override
             public void onResponse(@NonNull Call<OrderList> call, @NonNull Response<OrderList> response) {
-
-
                 if (response.isSuccessful() && response.body() != null) {
 
                     String value = response.body().getValue();
