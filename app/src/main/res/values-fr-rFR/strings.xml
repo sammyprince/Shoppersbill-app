@@ -214,5 +214,7 @@
     <string name="reset">Réinitialiser</string>
     <string name="register">Register</string>
     <string name="subscribe">subscribe</string>
+    <string name="home_page_top_background">home page top background</string>
+    <string name="total_sale">TotalSale:</string>
 
 </resources>

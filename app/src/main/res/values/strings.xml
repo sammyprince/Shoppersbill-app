@@ -117,7 +117,7 @@
     <string name="monthly_expense_in_graph">Monthly Expense in Graph</string>
     <string name="year">Year</string>
     <string name="monthly_expense_report">Monthly Expense Report</string>
-    <string name="total_expense">Total Expense: </string>
+    <string name="total_expense">Total Expense : </string>
     <string name="monthly_sales_report">Monthly Sales Report</string>
     <string name="all_expense">All Expense</string>
     <string name="yes">Yes</string>
@@ -129,7 +129,7 @@
     <string name="select_customer">SELECT CUSTOMER</string>
     <string name="order_history">Order History</string>
     <string name="order_details">Order Details</string>
-    <string name="total_price">Total Price: </string>
+    <string name="total_price">Total Price : </string>
     <string name="add_expense">Add Expense</string>
     <string name="product_removed_from_cart">Product removed from cart</string>
     <string name="backup_completed_successfully">Backup Completed Successfully</string>
@@ -241,5 +241,7 @@
     <string name="country">Country</string>
     <string name="first_name">First Name</string>
     <string name="user_name">User Name</string>
+    <string name="home_page_top_background">home page top background</string>
+    <string name="total_sale">TotalSale:</string>
 
 </resources>

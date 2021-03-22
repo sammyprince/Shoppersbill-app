@@ -51,6 +51,15 @@ public class Login {
     @SerializedName("shop_status")
     private String shopStatus;
 
+    @SerializedName("public_key")
+    private String public_key;
+
+    @SerializedName("encrypt_key")
+    private String encrypt_key;
+
+    @SerializedName("currency_name")
+    private String currency_name;
+
     @SerializedName("token")
     private String token;
 
@@ -125,6 +134,16 @@ public class Login {
 
     public String getCurrencySymbol() {
         return currencySymbol;
+    }
+
+    public String getCurrencyName() {
+        return currency_name;
+    }
+    public String getPublicKey() {
+        return public_key;
+    }
+    public String getEncryptKey() {
+        return encrypt_key;
     }
 
     public String getTax() {

@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
@@ -19,7 +21,14 @@ import com.app.onlineshoppersbill.R;
 import com.app.onlineshoppersbill.model.Package;
 import com.flutterwave.raveandroid.RaveUiManager;
 import com.flutterwave.raveandroid.RavePayActivity;
+import com.flutterwave.raveandroid.rave_java_commons.Meta;
 import com.flutterwave.raveandroid.rave_java_commons.RaveConstants;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 public class PurchseSubscribeActivity extends AppCompatActivity {
 
@@ -65,17 +74,20 @@ public class PurchseSubscribeActivity extends AppCompatActivity {
         btn_subscribe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ArrayList meta = new ArrayList();
+                meta.add(new Meta("gateway", "Flutterwave"));
+                meta.add(new Meta("user_id", sp.getString(Constant.SP_STAFF_ID, "0")));
+                meta.add(new Meta("package_id", packageData.getPackageId()));
                 new RaveUiManager(PurchseSubscribeActivity.this)
                         .setAmount(Double.parseDouble(packageData.getPackagePrice()))
-                        .setEmail("Tuktarov2121@gmail.com")
-                        .setCountry("Nigeria")
-                        .setCurrency("USD")
-                        .setfName("Tuktarov")
-                        .setlName("Denis")
+                        .setEmail(sp.getString(Constant.SP_SHOP_EMAIL, ""))
+                        .setCurrency(sp.getString(Constant.SP_CURRENCY_NAME, ""))
+                        .setfName(sp.getString(Constant.SP_SHOP_NAME, ""))
                         .setNarration("Purchase Subscription")
-                        .setPublicKey("FLWPUBK_TEST-ae9bb6dd6b10e7325b1e00ac76a941d8-X")
-                        .setEncryptionKey("FLWSECK_TESTcbe173cd539d")
+                        .setPublicKey(sp.getString(Constant.SP_PUBLIC_KEY, ""))
+                        .setEncryptionKey(sp.getString(Constant.SP_ENCRYPT_KEY, ""))
                         .setTxRef(System.currentTimeMillis() + "Ref")
+                        .setMeta(meta)
                         .acceptAccountPayments(true)
                         .acceptCardPayments(true)
                         .acceptMpesaPayments(true)

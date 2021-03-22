@@ -126,6 +126,9 @@ public class LoginActivity extends BaseActivity {
                     String shopEmail = response.body().getShopEmail();
                     String tax = response.body().getTax();
                     String currencySymbol = response.body().getCurrencySymbol();
+                    String currencyName = response.body().getCurrencyName();
+                    String publicKey = response.body().getPublicKey();
+                    String encryptKey = response.body().getEncryptKey();
                     String shopStatus = response.body().getShopStatus();
                     String token = response.body().getToken();
 
@@ -156,6 +159,9 @@ public class LoginActivity extends BaseActivity {
                             editor.putString(Constant.SP_SHOP_CONTACT, shopContact);
                             editor.putString(Constant.SP_SHOP_STATUS, shopStatus);
                             editor.putString(Constant.SP_CURRENCY_SYMBOL, currencySymbol);
+                            editor.putString(Constant.SP_CURRENCY_NAME, currencyName);
+                            editor.putString(Constant.SP_PUBLIC_KEY, publicKey);
+                            editor.putString(Constant.SP_ENCRYPT_KEY, encryptKey);
                             editor.putString(Constant.SP_TAX, tax);
                             editor.putString(Constant.SP_AUTH_TOKEN, token);
 

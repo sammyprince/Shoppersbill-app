@@ -44,6 +44,9 @@ public class Constant {
 
     public static final String SP_SHOP_STATUS="shop_status";
     public static final String SP_CURRENCY_SYMBOL="currency_symbol";
+    public static final String SP_CURRENCY_NAME="currency_name";
+    public static final String SP_PUBLIC_KEY="public_key";
+    public static final String SP_ENCRYPT_KEY="encrypt_key";
     public static final String SP_TAX="tax";
 
 

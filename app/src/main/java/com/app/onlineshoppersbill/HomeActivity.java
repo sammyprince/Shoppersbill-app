@@ -10,20 +10,31 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import com.app.onlineshoppersbill.about.AboutActivity;
+import com.app.onlineshoppersbill.adapter.ExpenseAdapter;
 import com.app.onlineshoppersbill.customers.CustomersActivity;
 import com.app.onlineshoppersbill.expense.ExpenseActivity;
 import com.app.onlineshoppersbill.login.LoginActivity;
+import com.app.onlineshoppersbill.model.Expense;
+import com.app.onlineshoppersbill.model.ExpenseReport;
+import com.app.onlineshoppersbill.model.SalesReport;
+import com.app.onlineshoppersbill.networking.ApiClient;
+import com.app.onlineshoppersbill.networking.ApiInterface;
 import com.app.onlineshoppersbill.orders.OrdersActivity;
 import com.app.onlineshoppersbill.pos.PosActivity;
 import com.app.onlineshoppersbill.product.ProductActivity;
+import com.app.onlineshoppersbill.report.ExpenseReportActivity;
 import com.app.onlineshoppersbill.report.ReportActivity;
+import com.app.onlineshoppersbill.report.SalesReportActivity;
 import com.app.onlineshoppersbill.settings.SettingsActivity;
 import com.app.onlineshoppersbill.suppliers.SuppliersActivity;
 import com.app.onlineshoppersbill.utils.BaseActivity;
@@ -35,9 +46,13 @@ import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import es.dmoral.toasty.Toasty;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype.Slidetop;
 
@@ -48,13 +63,87 @@ public class HomeActivity extends BaseActivity {
     //for double back press to exit
     private static final int TIME_DELAY = 2000;
     private static long backPressed;
-
+    ImageView imgAvatar;
     SharedPreferences sp;
     SharedPreferences.Editor editor;
     String userType;
-    TextView txtShopName,txtSubText;
+    TextView txtTotalSale, txtTotalPrice, txtTotalExpense, txtTotalTax;
+
+    @Override
+    public void onActivityReenter(int resultCode, Intent data){
+        updateSales();
+        updateExpense();
+    }
+
+    private void updateSales(){
+        ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+        Call<SalesReport> call;
+        String staffId = sp.getString(Constant.SP_STAFF_ID, "");
+        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
+        call = apiInterface.getSalesReport(auth_token, staffId, "all");
+        call.enqueue(new Callback<SalesReport>() {
+            @Override
+            public void onResponse(@NonNull Call<SalesReport> call, @NonNull Response<SalesReport> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    SalesReport salesReport = response.body();
+                    if (salesReport != null) {
+                        String totalOrderPrice=salesReport.getTotalOrderPrice();
+                        String totalTax=salesReport.getTotalTax();
+                        String totalDiscount=salesReport.getTotalDiscount();
+                        if (totalOrderPrice!=null) {
 
 
+                            double orderPrice = Double.parseDouble(totalOrderPrice);
+                            double getTax = Double.parseDouble(totalTax);
+                            double getDiscount = Double.parseDouble(totalDiscount);
+                            double netSales = orderPrice + getTax - getDiscount;
+
+                            DecimalFormat f = new DecimalFormat("#0.00");
+                            String currency = sp.getString(Constant.SP_CURRENCY_SYMBOL, "N/A");
+                            txtTotalPrice.setText(getString(R.string.total_price) + "\n" + currency + f.format(orderPrice));
+                            txtTotalTax.setText(getString(R.string.total_tax) + " :\n" + currency +f.format(getTax));
+                            txtTotalSale.setText(getString(R.string.total_sales) + "\n" + currency + f.format(netSales));
+                        }
+                    }
+
+                }
+            }
+            @Override
+            public void onFailure(@NonNull Call<SalesReport> call, @NonNull Throwable t) {
+            }
+        });
+
+    }
+
+    private void updateExpense(){
+        ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+        Call<ExpenseReport> call;
+        String staffId = sp.getString(Constant.SP_STAFF_ID, "");
+        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
+        call = apiInterface.getExpenseReport(auth_token, staffId, "all");
+        call.enqueue(new Callback<ExpenseReport>() {
+            @Override
+            public void onResponse(@NonNull Call<ExpenseReport> call, @NonNull Response<ExpenseReport> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    ExpenseReport expenseReports;
+                    expenseReports = response.body();
+                    if (expenseReports != null) {
+                        String totalExpense = expenseReports.getTotalExpensePrice();
+                        if (totalExpense!=null) {
+                            DecimalFormat f = new DecimalFormat("#0.00");
+                            String currency = sp.getString(Constant.SP_CURRENCY_SYMBOL, "N/A");
+                            txtTotalExpense.setText(getString(R.string.total_expense) + "\n"+currency + totalExpense);
+                        }
+                    }
+                 }
+            }
+            @Override
+            public void onFailure(@NonNull Call<ExpenseReport> call, @NonNull Throwable t) {
+            }
+        });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,18 +164,18 @@ public class HomeActivity extends BaseActivity {
         cardExpense = findViewById(R.id.card_expense);
         cardAbout = findViewById(R.id.card_about_us);
         cardLogout = findViewById(R.id.card_logout);
-        txtShopName = findViewById(R.id.txt_shop_name);
-        txtSubText = findViewById(R.id.txt_sub_text);
-
-
+        imgAvatar = findViewById(R.id.avatarView);
         sp = getSharedPreferences(Constant.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        txtTotalExpense = findViewById(R.id.txtTotalExpense);
+        txtTotalSale = findViewById(R.id.txtTotalSale);
+        txtTotalPrice = findViewById(R.id.txtTotalPrice);
+        txtTotalTax = findViewById(R.id.txtTotalTax);
+        imgAvatar.setClipToOutline(true);
         editor = sp.edit();
 
         userType = sp.getString(Constant.SP_USER_TYPE, "");
         String shopName = sp.getString(Constant.SP_SHOP_NAME, "");
         String staffName = sp.getString(Constant.SP_STAFF_NAME, "");
-        txtShopName.setText(shopName);
-        txtSubText.setText("Hi "+staffName);
 
 
 
@@ -95,8 +184,6 @@ public class HomeActivity extends BaseActivity {
             requestPermission();
 
         }
-
-
 
         cardCustomers.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -245,6 +332,9 @@ public class HomeActivity extends BaseActivity {
 
             }
         });
+
+        updateSales();
+        updateExpense();
     }
 
 
