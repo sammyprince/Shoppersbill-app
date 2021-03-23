@@ -164,6 +164,7 @@ public class LoginActivity extends BaseActivity {
                             editor.putString(Constant.SP_PUBLIC_KEY, publicKey);
                             editor.putString(Constant.SP_ENCRYPT_KEY, encryptKey);
                             editor.putString(Constant.SP_TAX, tax);
+                            editor.putString(Constant.SP_AUTH_TOKEN, token);
                             editor.putString(Constant.SP_SUBSCRIPTION_ID, subscription_id);
 
 
