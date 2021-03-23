@@ -80,6 +80,35 @@ public interface ApiInterface {
             @Field("order_data") String ordersData
     );
 
+    @FormUrlEncoded
+    @POST("category/add")
+    Call<String> addCategory(
+            @Header("Authorization") String auth,
+            @Field(Constant.SP_STAFF_ID) String staffId,
+            @Field("category_name") String categoryName,
+            @Field("category_code") String categoryCode,
+            @Field("category_description") String categoryDescription
+    );
+
+    @FormUrlEncoded
+    @POST("category/update")
+    Call<String> updateCategory(
+            @Header("Authorization") String auth,
+            @Field(Constant.SP_STAFF_ID) String staffId,
+            @Field("category_id") String categoryId,
+            @Field("category_name") String categoryName,
+            @Field("category_code") String categoryCode,
+            @Field("category_description") String categoryDescription
+    );
+
+    @FormUrlEncoded
+    @POST("category/delete")
+    Call<String> deleteCategory(
+            @Header("Authorization") String auth,
+            @Field(Constant.SP_STAFF_ID) String staffId,
+            @Field("category_id") String categoryId
+    );
+
     //get customers data
     @GET("customers/list")
     Call<List<Customer>> getCustomers(
@@ -359,12 +388,10 @@ public interface ApiInterface {
 
     //for upload image and info
     @Multipart
-    
     @POST("products/add_item")
     Call<Product> addProduct(
             @Header("Authorization") String auth,
-            @Part MultipartBody.Part file,
-            @Part(Constant.SP_STAFF_ID) String staffId,
+            @Part(Constant.SP_STAFF_ID) RequestBody staffId,
             @Part(Constant.KEY_FILE) RequestBody name,
             @Part(Constant.PRODUCT_NAME) RequestBody productName,
             @Part(Constant.PRODUCT_CODE) RequestBody productCode,
@@ -374,7 +401,9 @@ public interface ApiInterface {
             @Part(Constant.PRODUCT_WEIGHT) RequestBody weight,
             @Part(Constant.PRODUCT_WEIGHT_UNIT_ID) RequestBody weightUnitId,
             @Part(Constant.SUPPLIERS_ID) RequestBody supplierId,
-            @Part(Constant.PRODUCT_STOCK) RequestBody stock);
+            @Part(Constant.PRODUCT_STOCK) RequestBody stock,
+            @Part MultipartBody.Part file
+            );
 
     //for upload image and info
     @FormUrlEncoded
@@ -400,7 +429,8 @@ public interface ApiInterface {
     Call<Product> updateProduct(
             @Header("Authorization") String auth,
             @Part MultipartBody.Part file,
-            @Part(Constant.KEY_FILE) RequestBody name,
+            @Part(Constant.SP_STAFF_ID) RequestBody staffId,
+            @Part(Constant.KEY_FILE) RequestBody fileName,
             @Part(Constant.PRODUCT_NAME) RequestBody productName,
             @Part(Constant.PRODUCT_CODE) RequestBody productCode,
             @Part(Constant.CATEGORY_ID) RequestBody categoryId,
@@ -414,21 +444,21 @@ public interface ApiInterface {
 
 
     //for upload image and info
-    @Multipart
-    
+    @FormUrlEncoded
     @POST("products/update_product_without_image")
     Call<Product> updateProductWithoutImage(
             @Header("Authorization") String auth,
-            @Part(Constant.PRODUCT_NAME) RequestBody productName,
-            @Part(Constant.PRODUCT_CODE) RequestBody productCode,
-            @Part(Constant.CATEGORY_ID) RequestBody categoryId,
-            @Part(Constant.PRODUCT_DESCRIPTION) RequestBody description,
-            @Part(Constant.PRODUCT_SELL_PRICE) RequestBody sellPrice,
-            @Part(Constant.PRODUCT_WEIGHT) RequestBody weight,
-            @Part(Constant.PRODUCT_WEIGHT_UNIT_ID) RequestBody weightUnitId,
-            @Part(Constant.SUPPLIERS_ID) RequestBody supplierId,
-            @Part(Constant.PRODUCT_STOCK) RequestBody stock,
-            @Part(Constant.PRODUCT_ID) RequestBody productId);
+            @Field(Constant.SP_STAFF_ID) String staffId,
+            @Field(Constant.PRODUCT_NAME) String productName,
+            @Field(Constant.PRODUCT_CODE) String productCode,
+            @Field(Constant.CATEGORY_ID) String categoryId,
+            @Field(Constant.PRODUCT_DESCRIPTION) String description,
+            @Field(Constant.PRODUCT_SELL_PRICE) String sellPrice,
+            @Field(Constant.PRODUCT_WEIGHT) String weight,
+            @Field(Constant.PRODUCT_WEIGHT_UNIT_ID) String weightUnitId,
+            @Field(Constant.SUPPLIERS_ID) String supplierId,
+            @Field(Constant.PRODUCT_STOCK) String stock,
+            @Field(Constant.PRODUCT_ID) String productId);
 
 
     //get expense data

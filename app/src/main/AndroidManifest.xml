@@ -28,6 +28,8 @@
         <activity android:name="com.app.onlineshoppersbill.settings.payment_method.EditPaymentMethodActivity" />
         <activity android:name="com.app.onlineshoppersbill.settings.payment_method.AddPaymentMethodActivity" />
         <activity android:name="com.app.onlineshoppersbill.settings.payment_method.PaymentMethodActivity" />
+        <activity android:name="com.app.onlineshoppersbill.settings.categories.EditCategoryActivity" />
+        <activity android:name="com.app.onlineshoppersbill.settings.categories.AddCategoryActivity" />
         <activity android:name="com.app.onlineshoppersbill.settings.categories.CategoriesActivity" />
         <activity android:name="com.app.onlineshoppersbill.settings.subscribe.SubscribeActivity" />
         <activity android:name="com.app.onlineshoppersbill.settings.subscribe.PurchseSubscribeActivity" />

@@ -12,6 +12,12 @@ public class Category {
     @SerializedName("product_category_name")
     private String productCategoryName;
 
+    @SerializedName("product_category_code")
+    private String productCategoryCode;
+
+    @SerializedName("product_category_description")
+    private String productCategoryDescription;
+
 
     @SerializedName("value")
     private String value;
@@ -20,11 +26,14 @@ public class Category {
     public String getProductCategoryId() {
         return productCategoryId;
     }
-
-
-
     public String getProductCategoryName() {
         return productCategoryName;
+    }
+    public String getProductCategoryDescription() {
+        return productCategoryDescription;
+    }
+    public String getProductCategoryCode() {
+        return productCategoryCode;
     }
 
 

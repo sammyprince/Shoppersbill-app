@@ -750,44 +750,36 @@ public class EditProductActivity extends BaseActivity {
         RequestBody requestBody;
         MultipartBody.Part fileToUpload = null;
         RequestBody filename = null;
+        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
+        String staffId = sp.getString(Constant.SP_STAFF_ID, "");
+        Call<Product> call;
         // Map is used to multipart the file using okhttp3.RequestBody
         if (mediaPath.equals("na"))
         {
+            ApiInterface getResponse = ApiClient.getApiClient().create(ApiInterface.class);
           //code
-
+            call = getResponse.updateProductWithoutImage(auth_token, staffId, productName, productCode, productCategoryId, productDescription, productSellPrice, productWeight, productWeightUnitId, productSupplierId, productStock,productID);
         }
         else {
-             file = new File(mediaPath);
-             requestBody = RequestBody.create(MediaType.parse("*/*"), file);
-             fileToUpload = MultipartBody.Part.createFormData("file", file.getName(), requestBody);
-             filename = RequestBody.create(MediaType.parse("text/plain"), file.getName());
-
+            ApiInterface getResponse = ApiClient.getApiClient_multipart().create(ApiInterface.class);
+            file = new File(mediaPath);
+            requestBody = RequestBody.create(MediaType.parse("*/*"), file);
+            fileToUpload = MultipartBody.Part.createFormData("file", file.getName(), requestBody);
+            filename = RequestBody.create(MediaType.parse("text/plain"), file.getName());
+            RequestBody name = RequestBody.create(MediaType.parse("text/plain"), productName);
+            RequestBody code = RequestBody.create(MediaType.parse("text/plain"), productCode);
+            RequestBody category = RequestBody.create(MediaType.parse("text/plain"), productCategoryId);
+            RequestBody description = RequestBody.create(MediaType.parse("text/plain"), productDescription);
+            RequestBody sellPrice = RequestBody.create(MediaType.parse("text/plain"), productSellPrice);
+            RequestBody weight = RequestBody.create(MediaType.parse("text/plain"), productWeight);
+            RequestBody weightUnitId = RequestBody.create(MediaType.parse("text/plain"), productWeightUnitId);
+            RequestBody supplierId = RequestBody.create(MediaType.parse("text/plain"), productSupplierId);
+            RequestBody stock = RequestBody.create(MediaType.parse("text/plain"),productStock);
+            RequestBody getProductID = RequestBody.create(MediaType.parse("text/plain"),productID);
+            RequestBody userId = RequestBody.create(MediaType.parse("text/plain"), staffId);
+            call = getResponse.updateProduct(auth_token, fileToUpload, userId, filename, name, code, category, description, sellPrice, weight, weightUnitId, supplierId, stock, getProductID);
         }
-        // Parsing any Media type file
 
-        RequestBody name = RequestBody.create(MediaType.parse("text/plain"), productName);
-        RequestBody code = RequestBody.create(MediaType.parse("text/plain"), productCode);
-        RequestBody category = RequestBody.create(MediaType.parse("text/plain"), productCategoryId);
-        RequestBody description = RequestBody.create(MediaType.parse("text/plain"), productDescription);
-        RequestBody sellPrice = RequestBody.create(MediaType.parse("text/plain"), productSellPrice);
-        RequestBody weight = RequestBody.create(MediaType.parse("text/plain"), productWeight);
-        RequestBody weightUnitId = RequestBody.create(MediaType.parse("text/plain"), productWeightUnitId);
-        RequestBody supplierId = RequestBody.create(MediaType.parse("text/plain"), productSupplierId);
-        RequestBody stock = RequestBody.create(MediaType.parse("text/plain"),productStock);
-        RequestBody getProductID = RequestBody.create(MediaType.parse("text/plain"),productID);
-
-
-
-        ApiInterface getResponse = ApiClient.getApiClient().create(ApiInterface.class);
-        Call<Product> call;
-        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
-        if (mediaPath.equals("na"))
-        {
-            call = getResponse.updateProductWithoutImage(auth_token, name,code,category,description,sellPrice,weight,weightUnitId,supplierId,stock,getProductID);
-        }
-        else {
-           call = getResponse.updateProduct(auth_token, fileToUpload, filename, name, code, category, description, sellPrice, weight, weightUnitId, supplierId, stock, getProductID);
-        }
         call.enqueue(new Callback<Product>() {
             @Override
             public void onResponse(@NonNull Call<Product> call, @NonNull Response<Product> response) {
