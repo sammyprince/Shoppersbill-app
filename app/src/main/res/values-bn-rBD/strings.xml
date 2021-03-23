@@ -237,5 +237,6 @@
     <string name="subscribe">subscribe</string>
     <string name="home_page_top_background">home page top background</string>
     <string name="total_sale">TotalSale:</string>
+    <string name="last_name">Last Name</string>
 
 </resources>

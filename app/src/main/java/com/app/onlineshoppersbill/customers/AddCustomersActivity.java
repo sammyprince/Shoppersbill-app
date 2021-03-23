@@ -131,21 +131,16 @@ public class AddCustomersActivity extends BaseActivity {
                         startActivity(intent);
 
                     }
-                   else if (value.equals(Constant.KEY_FAILURE)) {
-
+                    else if (value.equals(Constant.KEY_FAILURE)) {
                         loading.dismiss();
-
                         Toasty.error(AddCustomersActivity.this, R.string.failed, Toast.LENGTH_SHORT).show();
                         finish();
-
                     }
-
                     else {
                         loading.dismiss();
                         Toasty.error(AddCustomersActivity.this, R.string.failed, Toast.LENGTH_SHORT).show();
                     }
                 }
-
                 else
                 {
                     loading.dismiss();

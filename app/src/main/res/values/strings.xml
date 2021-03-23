@@ -40,6 +40,9 @@
     <string name="suppliers_successfully_added">Suppliers Successfully Added</string>
     <string name="failed">Failed</string>
 
+    <string name="please_subscribe">Please subscribe...</string>
+    <string name="production_limited_by_subscription">Production limited by subscription...</string>
+
     <string name="product_name_cannot_be_empty">Product name can\'t be empty!</string>
     <string name="product_code_cannot_be_empty">Product code can\'t be empty!</string>
     <string name="product_category_cannot_be_empty">Product category can\'t be empty!</string>
@@ -55,8 +58,12 @@
     <string name="currency_cannot_be_empty">Currency can\'t be empty!</string>
     <string name="timezone_cannot_be_empty">Timezone can\'t be empty!</string>
     <string name="first_name_cannot_be_empty">First name can\'t be empty!</string>
+    <string name="last_name_cannot_be_empty">Last name can\'t be empty!</string>
     <string name="user_name_cannot_be_empty">User name can\'t be empty!</string>
     <string name="password_cannot_be_empty">Password can\'t be empty!</string>
+
+    <string name="package_activated">Activated</string>
+    <string name="package_activate">Activate</string>
 
 
     <string name="subscribe_succeed">Subscribe Succeed!</string>
@@ -243,5 +250,6 @@
     <string name="user_name">User Name</string>
     <string name="home_page_top_background">home page top background</string>
     <string name="total_sale">TotalSale:</string>
+    <string name="last_name">Last Name</string>
 
 </resources>

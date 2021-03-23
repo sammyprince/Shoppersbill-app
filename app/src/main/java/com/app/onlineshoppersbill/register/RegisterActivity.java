@@ -51,7 +51,7 @@ public class RegisterActivity extends BaseActivity {
     ProgressDialog loading;
     SharedPreferences sp;
 
-    EditText etxtBusinessName, etxtEmail, etxtCountry, etxtCurrency, etxtTimeZone, etxtFirstName, etxtUserName, etxtPassword;
+    EditText etxtBusinessName, etxtEmail, etxtCountry, etxtCurrency, etxtTimeZone, etxtFirstName, etxtLastName, etxtUserName, etxtPassword;
     TextView txtRegisterUser;
     ArrayAdapter<String> currencyAdapter, timezoneAdapter;
     RegisterBaseInfo baseInfo;
@@ -73,6 +73,7 @@ public class RegisterActivity extends BaseActivity {
         etxtCurrency = findViewById(R.id.etxt_currency);
         etxtTimeZone = findViewById(R.id.etxt_time_zone);
         etxtFirstName = findViewById(R.id.etxt_first_name);
+        etxtLastName = findViewById(R.id.etxt_last_name);
         etxtUserName = findViewById(R.id.etxt_user_name);
         etxtPassword = findViewById(R.id.etxt_register_password);
 
@@ -233,6 +234,7 @@ public class RegisterActivity extends BaseActivity {
                 String currency = selectedCurrency;
                 String timezone = selectedTimezone;
                 String firstName = etxtFirstName.getText().toString();
+                String lastName = etxtLastName.getText().toString();
                 String userName = etxtUserName.getText().toString();
                 String password = etxtPassword.getText().toString();
 
@@ -251,6 +253,9 @@ public class RegisterActivity extends BaseActivity {
                 } else if (firstName.isEmpty()) {
                     etxtFirstName.setError(getString(R.string.first_name_cannot_be_empty));
                     etxtFirstName.requestFocus();
+                } else if (lastName.isEmpty()) {
+                    etxtLastName.setError(getString(R.string.first_name_cannot_be_empty));
+                    etxtLastName.requestFocus();
                 } else if (userName.isEmpty()) {
                     etxtUserName.setError(getString(R.string.user_name_cannot_be_empty));
                     etxtUserName.requestFocus();
@@ -258,7 +263,7 @@ public class RegisterActivity extends BaseActivity {
                     etxtPassword.setError(getString(R.string.password_cannot_be_empty));
                     etxtPassword.requestFocus();
                 } else {
-                    registerUser(businessName, email, country, currency, timezone, firstName, userName, password);
+                    registerUser(businessName, email, country, currency, timezone, firstName, lastName, userName, password);
                 }
             }
         });
@@ -281,6 +286,7 @@ public class RegisterActivity extends BaseActivity {
                                String currency,
                                String timezone,
                                String firstName,
+                               String lastName,
                                String userName,
                                String password) {
 
@@ -292,7 +298,7 @@ public class RegisterActivity extends BaseActivity {
         ApiInterface getResponse = ApiClient.getApiClient().create(ApiInterface.class);
         Call<RegisterInfo> call;
 
-        call = getResponse.registerUser(businessName, email, country, currency, timezone, firstName, userName, password);
+        call = getResponse.registerUser(businessName, email, country, currency, timezone, firstName, lastName, userName, password);
 
         call.enqueue(new Callback<RegisterInfo>() {
             @Override

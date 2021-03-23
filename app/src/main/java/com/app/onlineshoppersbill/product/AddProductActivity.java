@@ -26,6 +26,7 @@ import androidx.annotation.NonNull;
 
 import com.app.onlineshoppersbill.Constant;
 import com.app.onlineshoppersbill.R;
+import com.app.onlineshoppersbill.customers.AddCustomersActivity;
 import com.app.onlineshoppersbill.model.Category;
 import com.app.onlineshoppersbill.model.Product;
 import com.app.onlineshoppersbill.model.Suppliers;
@@ -507,7 +508,18 @@ public class AddProductActivity extends BaseActivity {
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                     }
+                    else if (value.equals(Constant.KEY_SUBSCRIBE)) {
 
+                        loading.dismiss();
+                        Toasty.error(AddProductActivity.this, R.string.please_subscribe, Toast.LENGTH_SHORT).show();
+                        finish();
+
+                    }
+                    else if (value.equals(Constant.KEY_LIMIT)) {
+                        loading.dismiss();
+                        Toasty.error(AddProductActivity.this, R.string.production_limited_by_subscription, Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
                     else if (value.equals(Constant.KEY_FAILURE)) {
 
                             loading.dismiss();

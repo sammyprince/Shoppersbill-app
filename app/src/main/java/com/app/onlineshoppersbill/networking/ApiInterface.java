@@ -46,6 +46,12 @@ public interface ApiInterface {
             @Field(Constant.KEY_EMAIL) String email,
             @Field(Constant.KEY_PASSWORD) String password);
 
+    //for login
+    @FormUrlEncoded
+    @POST("request_activate")
+    Call<String> requestActivate(
+            @Header("Authorization") String auth,
+            @Field(Constant.SP_STAFF_ID) String staffId);
 
     //for register
     @GET("register_base_info")
@@ -60,6 +66,7 @@ public interface ApiInterface {
             @Field("currency") String currency,
             @Field("time_zone") String timezone,
             @Field("first_name") String firstName,
+            @Field("last_name") String lastName,
             @Field("username") String userName,
             @Field("password") String password
     );

@@ -23,6 +23,9 @@ public class RegisterInfo {
     @SerializedName("first_name")
     private String first_name;
 
+    @SerializedName("last_name")
+    private String last_name;
+
     @SerializedName("user_name")
     private String user_name;
 

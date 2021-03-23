@@ -21,8 +21,6 @@ public class Login {
     @SerializedName("user_type")
     private String userType;
 
-
-
     @SerializedName("password")
     private String password;
 
@@ -59,6 +57,9 @@ public class Login {
 
     @SerializedName("currency_name")
     private String currency_name;
+
+    @SerializedName("subscription_id")
+    private String subscription_id;
 
     @SerializedName("token")
     private String token;
@@ -148,6 +149,9 @@ public class Login {
 
     public String getTax() {
         return tax;
+    }
+    public String getSubscriptionId() {
+        return subscription_id;
     }
 
     public String getToken() { return token; }

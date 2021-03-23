@@ -8,7 +8,7 @@ public class Constant {
     }
 
     //For retrofit base url must end with /
-    public static final String BASE_URL = "http://1cf0b811ca3a.ngrok.io/api/";
+    public static final String BASE_URL = "http://192.168.104.55:8000/api/";
 
     //For retrofit base url must end with /
     public static final String PRODUCT_IMAGE_URL = "http://localhost/product_images/";
@@ -159,6 +159,7 @@ public class Constant {
 
     public static final String SP_PHONE_NO = "phone_no";
     public static final String SP_AUTH_TOKEN = "auth_token";
+    public static final String SP_SUBSCRIPTION_ID = "subscription_id";
 
     public static final String SP_LOCATION_LAT = "location_lat";
     public static final String SP_LOCATION_LON = "location_lon";
@@ -179,6 +180,8 @@ public class Constant {
     public static final String KEY_SUCCESS= "success";
     public static final String KEY_EXIST= "exist";
     public static final String KEY_FAILURE= "failure";
+    public static final String KEY_SUBSCRIBE= "subscribe";
+    public static final String KEY_LIMIT= "limit";
 
 
     public static final String SP_VERIFICATION_CODE = "verification_code";
