@@ -71,6 +71,7 @@ public class ProductCart extends BaseActivity {
     ArrayAdapter<String> customerAdapter, orderTypeAdapter, paymentMethodAdapter;
     SharedPreferences sp;
     String servedBy,staffId,shopTax,currency;
+    int selected_customer_index;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -193,7 +194,10 @@ public class ProductCart extends BaseActivity {
                     obj.put("order_price", String.valueOf(orderPrice));
                     obj.put("tax", String.valueOf(tax));
                     obj.put("discount", discount);
-                    obj.put("customer_id", staffId);
+                    String customer_id = "";
+                    if(customerData.size()>0)
+                        customer_id = customerData.get(selected_customer_index).getCustomerId();
+                    obj.put("customer_id", customer_id);
 
                     JSONArray array = new JSONArray();
 
@@ -593,6 +597,8 @@ public class ProductCart extends BaseActivity {
         dialogImgCustomer.setOnClickListener(v -> {
             customerAdapter = new ArrayAdapter<>(ProductCart.this, android.R.layout.simple_list_item_1);
             customerAdapter.addAll(customerNames);
+            if(customerNames.size()>0)
+                selected_customer_index = 0;
 
             AlertDialog.Builder dialog13 = new AlertDialog.Builder(ProductCart.this);
             View dialogView13 = getLayoutInflater().inflate(R.layout.dialog_list_search, null);
@@ -638,9 +644,8 @@ public class ProductCart extends BaseActivity {
                 alertDialog.dismiss();
                 String selectedItem = customerAdapter.getItem(position);
 
-
+                selected_customer_index = position;
                 dialogCustomer.setText(selectedItem);
-
 
             });
         });
