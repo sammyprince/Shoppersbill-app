@@ -2,6 +2,7 @@ package com.app.onlineshoppersbill.networking;
 
 
 import com.app.onlineshoppersbill.Constant;
+import com.app.onlineshoppersbill.model.BusinessLocation;
 import com.app.onlineshoppersbill.model.Category;
 import com.app.onlineshoppersbill.model.Package;
 import com.app.onlineshoppersbill.model.Customer;
@@ -215,7 +216,8 @@ public interface ApiInterface {
     
     @GET("category")
     Call<List<Category>> getCategory(
-            @Header("Authorization") String auth
+            @Header("Authorization") String auth,
+            @Query(Constant.SP_STAFF_ID) String staffId
     );
 
     @GET("pricing/packages")
@@ -385,6 +387,13 @@ public interface ApiInterface {
             @Query(Constant.SEARCH_TEXT) String searchText
     );
 
+    @GET("business_locations")
+    Call<List<BusinessLocation>> getBusinessLocations(
+            @Header("Authorization") String auth,
+            @Query(Constant.SP_STAFF_ID) String staffId,
+            @Query(Constant.SEARCH_TEXT) String searchText
+    );
+
 
     //for upload image and info
     @Multipart
@@ -402,6 +411,7 @@ public interface ApiInterface {
             @Part(Constant.PRODUCT_WEIGHT_UNIT_ID) RequestBody weightUnitId,
             @Part(Constant.SUPPLIERS_ID) RequestBody supplierId,
             @Part(Constant.PRODUCT_STOCK) RequestBody stock,
+            @Part(Constant.PRODUCT_LOCATION_ID) RequestBody location_id,
             @Part MultipartBody.Part file
             );
 
@@ -419,7 +429,8 @@ public interface ApiInterface {
             @Field(Constant.PRODUCT_WEIGHT) String weight,
             @Field(Constant.PRODUCT_WEIGHT_UNIT_ID) String weightUnitId,
             @Field(Constant.SUPPLIERS_ID) String supplierId,
-            @Field(Constant.PRODUCT_STOCK) String stock);
+            @Field(Constant.PRODUCT_STOCK) String stock,
+            @Field(Constant.PRODUCT_LOCATION_ID) String locationId);
 
 
     //for upload image and info

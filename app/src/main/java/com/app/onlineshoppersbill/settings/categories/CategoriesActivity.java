@@ -85,7 +85,8 @@ public class CategoriesActivity extends BaseActivity {
 
 
         String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
-        call = apiInterface.getCategory(auth_token);
+        String staffId = sp.getString(Constant.SP_STAFF_ID, "");
+        call = apiInterface.getCategory(auth_token, staffId);
 
         call.enqueue(new Callback<List<Category>>() {
             @Override

@@ -71,7 +71,7 @@ public class LoginActivity extends BaseActivity {
             String email1 = etxtEmail.getText().toString().trim();
             String password1 = etxtPassword.getText().toString().trim();
 
-            if (email1.isEmpty() || !email1.contains("@") || !email1.contains(".")) {
+            if (email1.isEmpty() /*|| !email1.contains("@") || !email1.contains(".")*/) {
                 etxtEmail.setError(getString(R.string.enter_valid_email));
                 etxtEmail.requestFocus();
             } else if (password1.isEmpty()) {

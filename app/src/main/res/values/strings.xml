@@ -49,6 +49,7 @@
     <string name="product_sell_price_cannot_be_empty">Product sell price can\'t be empty!</string>
     <string name="product_supplier_cannot_be_empty">Product supplier can\'t be empty!</string>
     <string name="product_weight_cannot_be_empty">Product weight can\'t be empty!</string>
+    <string name="product_location_cannot_be_empty">Product location can\'t be empty!</string>
     <string name="product_successfully_added">Product Successfully Added</string>
     <string name="user_successfully_registered">User Successfully Registered</string>
     <string name="something_went_wrong">Something went wrong</string>
@@ -79,7 +80,9 @@
     <string name="select_product_weight_unit">Select Product Weight Unit</string>
     <string name="product_weight_unit">Product Weight Unit</string>
     <string name="select_supplier">Select Supplier</string>
+    <string name="select_location">Select Location</string>
     <string name="product_supplier">Product Supplier</string>
+    <string name="product_location">Product Location</string>
     <string name="choose_product_image">Choose Product Image</string>
 
 
@@ -230,6 +233,7 @@
     <string name="order_success">Order Success</string>
     <string name="order_successfully_done">Order Successfully Done</string>
     <string name="email">Email</string>
+    <string name="email_username">Email or UserName</string>
     <string name="please_wait">Please wait. . .</string>
     <string name="no_network_connection">No network connection</string>
     <string name="products">Products</string>

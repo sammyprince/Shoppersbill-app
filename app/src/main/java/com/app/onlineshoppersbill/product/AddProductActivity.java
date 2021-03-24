@@ -27,6 +27,7 @@ import androidx.annotation.NonNull;
 import com.app.onlineshoppersbill.Constant;
 import com.app.onlineshoppersbill.R;
 import com.app.onlineshoppersbill.customers.AddCustomersActivity;
+import com.app.onlineshoppersbill.model.BusinessLocation;
 import com.app.onlineshoppersbill.model.Category;
 import com.app.onlineshoppersbill.model.Product;
 import com.app.onlineshoppersbill.model.Suppliers;
@@ -55,17 +56,18 @@ public class AddProductActivity extends BaseActivity {
     SharedPreferences sp;
 
     public static EditText etxtProductCode;
-    EditText etxtProductName,etxtProductStock, etxtProductCategory, etxtProductDescription, etxtProductSellPrice, etxtProductSupplier, etxtProdcutWeightUnit, etxtProductWeight;
+    EditText etxtProductName,etxtProductStock, etxtProductCategory, etxtProductDescription, etxtProductSellPrice, etxtProductSupplier, etxtProductLocation, etxtProdcutWeightUnit, etxtProductWeight;
     TextView txtAddProdcut, txtChooseImage;
     ImageView imgProduct, imgScanCode;
     String mediaPath, encodedImage = "N/A";
     List<Category> productCategory;
     List<Suppliers> productSuppliers;
     List<WeightUnit> weightUnits;
-    ArrayAdapter<String> categoryAdapter, supplierAdapter, weightUnitAdapter;
-    List<String> categoryNames, supplierNames, weightUnitNames;
+    List<BusinessLocation> businessLocations;
+    ArrayAdapter<String> categoryAdapter, supplierAdapter, weightUnitAdapter, locationAdapter;
+    List<String> categoryNames, supplierNames, weightUnitNames, locationNames;
 
-    String selectedCategoryID, selectedSupplierID, selectedWeightUnitID;
+    String selectedCategoryID, selectedSupplierID, selectedWeightUnitID, selectedLocationID;
 
 
     @Override
@@ -88,6 +90,7 @@ public class AddProductActivity extends BaseActivity {
         etxtProdcutWeightUnit = findViewById(R.id.etxt_product_weight_unit);
         etxtProductWeight = findViewById(R.id.etxt_product_weight);
         etxtProductStock = findViewById(R.id.etxt_product_stock);
+        etxtProductLocation = findViewById(R.id.etxt_location);
 
         txtAddProdcut = findViewById(R.id.txt_add_product);
         imgProduct = findViewById(R.id.image_product);
@@ -98,6 +101,7 @@ public class AddProductActivity extends BaseActivity {
         getProductCategory();
         getProductSuppliers();
         getWeightUnits();
+        getBusinessLocations();
 
         imgScanCode.setOnClickListener(v -> {
             Intent intent = new Intent(AddProductActivity.this, ScannerViewActivity.class);
@@ -354,6 +358,79 @@ public class AddProductActivity extends BaseActivity {
             }
         });
 
+        etxtProductLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                locationAdapter = new ArrayAdapter<>(AddProductActivity.this, android.R.layout.simple_list_item_1);
+                locationAdapter.addAll(locationNames);
+
+                AlertDialog.Builder dialog = new AlertDialog.Builder(AddProductActivity.this);
+                View dialogView = getLayoutInflater().inflate(R.layout.dialog_list_search, null);
+                dialog.setView(dialogView);
+                dialog.setCancelable(false);
+
+                Button dialogButton = (Button) dialogView.findViewById(R.id.dialog_button);
+                EditText dialogInput = (EditText) dialogView.findViewById(R.id.dialog_input);
+                TextView dialogTitle = (TextView) dialogView.findViewById(R.id.dialog_title);
+                ListView dialogList = (ListView) dialogView.findViewById(R.id.dialog_list);
+
+
+                dialogTitle.setText(R.string.product_location);
+                dialogList.setVerticalScrollBarEnabled(true);
+                dialogList.setAdapter(locationAdapter);
+
+                dialogInput.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        Log.d("data", s.toString());
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                        locationAdapter.getFilter().filter(charSequence);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        Log.d("data", s.toString());
+                    }
+                });
+
+
+                final AlertDialog alertDialog = dialog.create();
+
+                dialogButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
+                    }
+                });
+
+                alertDialog.show();
+
+
+                dialogList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                        alertDialog.dismiss();
+                        final String selectedItem = locationAdapter.getItem(position);
+
+                        String locationId = "0";
+                        etxtProductLocation.setText(selectedItem);
+
+
+                        for (int i = 0; i < locationNames.size(); i++) {
+                            if (locationNames.get(i).equalsIgnoreCase(selectedItem)) {
+                                // Get the ID of selected Country
+                                locationId = businessLocations.get(i).getLocationId();
+                            }
+                        }
+                        selectedLocationID = locationId;
+                    }
+                });
+            }
+        });
 
         txtAddProdcut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -375,6 +452,8 @@ public class AddProductActivity extends BaseActivity {
                 String productWeightUnitName = etxtProdcutWeightUnit.getText().toString();
                 String productWeightUnitId = selectedWeightUnitID;
                 String productWeight = etxtProductWeight.getText().toString();
+                String productLocationName = etxtProductLocation.getText().toString();
+                String productLocationId = selectedLocationID;
 
 
                 if (productName.isEmpty()) {
@@ -392,11 +471,11 @@ public class AddProductActivity extends BaseActivity {
                 } else if (productWeightUnitName.isEmpty() || productWeight.isEmpty()) {
                     etxtProductWeight.setError(getString(R.string.product_weight_cannot_be_empty));
                     etxtProductWeight.requestFocus();
-                } else if (productSupplierName.isEmpty() || productSupplierId.isEmpty()) {
-                    etxtProductSupplier.setError(getString(R.string.product_supplier_cannot_be_empty));
-                    etxtProductSupplier.requestFocus();
+                } else if (productLocationName.isEmpty() || productLocationId.isEmpty()) {
+                    etxtProductWeight.setError(getString(R.string.product_location_cannot_be_empty));
+                    etxtProductWeight.requestFocus();
                 } else {
-                    addProduct(productName, productCode, productCategoryId, productDescription, productSellPrice,  productWeight,productWeightUnitId,productSupplierId,productStock);
+                    addProduct(productName, productCode, productCategoryId, productDescription, productSellPrice,  productWeight,productWeightUnitId,productSupplierId,productStock, productLocationId);
                 }
             }
         });
@@ -448,7 +527,7 @@ public class AddProductActivity extends BaseActivity {
 
 
     // Uploading Image/Video
-    private void  addProduct(String productName,String productCode,String productCategoryId,String productDescription, String productSellPrice, String productWeight,String productWeightUnitId,String productSupplierId,String productStock) {
+    private void  addProduct(String productName,String productCode,String productCategoryId,String productDescription, String productSellPrice, String productWeight,String productWeightUnitId,String productSupplierId,String productStock, String productLocationId) {
 
         loading=new ProgressDialog(this);
         loading.setCancelable(false);
@@ -477,12 +556,13 @@ public class AddProductActivity extends BaseActivity {
             RequestBody weightUnitId = RequestBody.create(MediaType.parse("text/plain"), productWeightUnitId);
             RequestBody supplierId = RequestBody.create(MediaType.parse("text/plain"), productSupplierId);
             RequestBody stock = RequestBody.create(MediaType.parse("text/plain"),productStock);
-            call = getResponse.addProduct(auth_token, userId, filename,name,code,category,description,sellPrice,weight,weightUnitId,supplierId,stock, fileToUpload);
+            RequestBody locationId = RequestBody.create(MediaType.parse("text/plain"),productLocationId);
+            call = getResponse.addProduct(auth_token, userId, filename,name,code,category,description,sellPrice,weight,weightUnitId,supplierId,stock,locationId,fileToUpload);
         }
         else
         {
             ApiInterface getResponse = ApiClient.getApiClient().create(ApiInterface.class);
-            call = getResponse.addProduct_without_file(auth_token, staffId, productName, productCode, productCategoryId, productDescription, productSellPrice, productWeight, productWeightUnitId, productSupplierId, productStock);
+            call = getResponse.addProduct_without_file(auth_token, staffId, productName, productCode, productCategoryId, productDescription, productSellPrice, productWeight, productWeightUnitId, productSupplierId, productStock, productLocationId);
         }
 
 
@@ -557,7 +637,8 @@ public class AddProductActivity extends BaseActivity {
         Call<List<Category>> call;
 
         String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
-        call = apiInterface.getCategory(auth_token);
+        String staffId = sp.getString(Constant.SP_STAFF_ID, "");
+        call = apiInterface.getCategory(auth_token, staffId);
 
         call.enqueue(new Callback<List<Category>>() {
             @Override
@@ -670,6 +751,44 @@ public class AddProductActivity extends BaseActivity {
 
             @Override
             public void onFailure(@NonNull Call<List<WeightUnit>> call, @NonNull Throwable t) {
+
+                //write own action
+            }
+        });
+
+
+    }
+
+    public void getBusinessLocations() {
+
+        ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+
+        Call<List<BusinessLocation>> call;
+
+        String auth_token = sp.getString(Constant.SP_AUTH_TOKEN, "");
+        String staffId = sp.getString(Constant.SP_STAFF_ID, "");
+        call = apiInterface.getBusinessLocations(auth_token, staffId, "");
+
+        call.enqueue(new Callback<List<BusinessLocation>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<BusinessLocation>> call, @NonNull Response<List<BusinessLocation>> response) {
+
+
+                if (response.isSuccessful() && response.body() != null) {
+
+                    businessLocations = response.body();
+
+                    locationNames = new ArrayList<>();
+
+                    for (int i = 0; i < businessLocations.size(); i++) {
+
+                        locationNames.add(businessLocations.get(i).getLocationName());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<BusinessLocation>> call, @NonNull Throwable t) {
 
                 //write own action
             }

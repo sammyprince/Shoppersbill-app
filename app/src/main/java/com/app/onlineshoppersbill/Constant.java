@@ -93,6 +93,7 @@ public class Constant {
     public static final String PRODUCT_WEIGHT_UNIT="product_weight_unit";
     public static final String PRODUCT_WEIGHT="product_weight";
     public static final String PRODUCT_STOCK="product_stock";
+    public static final String PRODUCT_LOCATION_ID="product_location_id";
     public static final String PRODUCT_PRICE="product_price";
     public static final String PRODUCT_QTY="product_qty";
     public static final String PRODUCT_SUPPLIER="product_supplier";
