@@ -70,7 +70,8 @@ public class HomeActivity extends BaseActivity {
     TextView txtTotalSale, txtTotalPrice, txtTotalExpense, txtTotalTax;
 
     @Override
-    public void onActivityReenter(int resultCode, Intent data){
+    public void onStart() {
+        super.onStart();
         updateSales();
         updateExpense();
     }

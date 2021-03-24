@@ -152,6 +152,7 @@ public interface ApiInterface {
     @GET("orders/list_invoice")
     Call<List<OrderDetails>> OrderDetailsByInvoice(
             @Header("Authorization") String auth,
+            @Query(Constant.SP_STAFF_ID) String staffId,
             @Query(Constant.INVOICE_ID) String invoiceId
     );
 
